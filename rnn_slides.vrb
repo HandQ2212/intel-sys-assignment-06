@@ -1,0 +1,30 @@
+\frametitle{Simple RNN: mô hình và quá trình huấn luyện}
+\scriptsize
+\begin{columns}[T]
+\begin{column}{0.39\textwidth}
+\begin{lstlisting}[style=rnnpython,basicstyle=\ttfamily\color{white}\tiny]
+class SimpleRNNRegressor(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.rnn = nn.RNN(1, 32,
+                          batch_first=True)
+        self.out = nn.Linear(32, 1)
+
+    def forward(self, x):
+        h, _ = self.rnn(x)
+        return self.out(h[:, -1, :])
+\end{lstlisting}
+\vspace{0.05cm}
+\begin{block}{\textbf{Luồng tensor}}
+$(B,30,1) \rightarrow (B,32) \rightarrow (B,1)$
+\end{block}
+\end{column}
+\begin{column}{0.58\textwidth}
+\centering
+\includegraphics[width=\linewidth]{images/rnn_training_loss.png}
+\vspace{0.08cm}
+\begin{exampleblock}{\textbf{Đọc đồ thị loss}}
+Train loss gần 0; validation loss giảm mạnh rồi ổn định ở mức thấp. Đây là MSE trên dữ liệu đã scale, nên vẫn phải đánh giá sai số trên giá gốc và so với baseline.
+\end{exampleblock}
+\end{column}
+\end{columns}

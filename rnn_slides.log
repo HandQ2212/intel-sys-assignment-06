@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.16)  1 OCT 2026 16:42
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.16)  1 OCT 2026 22:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -886,6 +886,41 @@ File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 s/tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 )))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count387
+\lst@gtempboxa=\box86
+\lst@token=\toks50
+\lst@length=\count388
+\lst@currlwidth=\dimen334
+\lst@column=\count389
+\lst@pos=\count390
+\lst@lostspace=\dimen335
+\lst@width=\dimen336
+\lst@newlines=\count391
+\lst@lineno=\count392
+\lst@maxwidth=\dimen337
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/lstpatch.sty
+File: lstpatch.sty 2025/11/14 1.11b (Carsten Heinz)
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+\c@lstnumber=\count393
+\lst@skipnumbers=\count394
+\lst@framebox=\box87
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2025/11/14 1.11b listings configuration
+))
+Package: listings 2025/11/14 1.11b (Carsten Heinz)
+
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
 (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibraryshapes.code.tex
 File: tikzlibraryshapes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
@@ -933,34 +968,34 @@ File: tikzlibraryshapes.multipart.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
 shapes.multipart.code.tex
 File: pgflibraryshapes.multipart.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfnodepartlowerbox=\box86
-\pgfnodeparttwobox=\box87
-\pgfnodepartthreebox=\box88
-\pgfnodepartfourbox=\box89
-\pgfnodeparttwentybox=\box90
-\pgfnodepartnineteenbox=\box91
-\pgfnodeparteighteenbox=\box92
-\pgfnodepartseventeenbox=\box93
-\pgfnodepartsixteenbox=\box94
-\pgfnodepartfifteenbox=\box95
-\pgfnodepartfourteenbox=\box96
-\pgfnodepartthirteenbox=\box97
-\pgfnodeparttwelvebox=\box98
-\pgfnodepartelevenbox=\box99
-\pgfnodeparttenbox=\box100
-\pgfnodepartninebox=\box101
-\pgfnodeparteightbox=\box102
-\pgfnodepartsevenbox=\box103
-\pgfnodepartsixbox=\box104
-\pgfnodepartfivebox=\box105
+\pgfnodepartlowerbox=\box88
+\pgfnodeparttwobox=\box89
+\pgfnodepartthreebox=\box90
+\pgfnodepartfourbox=\box91
+\pgfnodeparttwentybox=\box92
+\pgfnodepartnineteenbox=\box93
+\pgfnodeparteighteenbox=\box94
+\pgfnodepartseventeenbox=\box95
+\pgfnodepartsixteenbox=\box96
+\pgfnodepartfifteenbox=\box97
+\pgfnodepartfourteenbox=\box98
+\pgfnodepartthirteenbox=\box99
+\pgfnodeparttwelvebox=\box100
+\pgfnodepartelevenbox=\box101
+\pgfnodeparttenbox=\box102
+\pgfnodepartninebox=\box103
+\pgfnodeparteightbox=\box104
+\pgfnodepartsevenbox=\box105
+\pgfnodepartsixbox=\box106
+\pgfnodepartfivebox=\box107
 )))
 (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.
 meta.code.tex
 File: pgflibraryarrows.meta.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfarrowinset=\dimen334
-\pgfarrowlength=\dimen335
-\pgfarrowwidth=\dimen336
-\pgfarrowlinewidth=\dimen337
+\pgfarrowinset=\dimen338
+\pgfarrowlength=\dimen339
+\pgfarrowwidth=\dimen340
+\pgfarrowlinewidth=\dimen341
 )
 (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarypositioning.code.tex
@@ -981,8 +1016,8 @@ File: tikzlibraryfit.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarybackgrounds.code.tex
 File: tikzlibrarybackgrounds.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@layerbox@background=\box106
-\pgf@layerboxsaved@background=\box107
+\pgf@layerbox@background=\box108
+\pgf@layerboxsaved@background=\box109
 )
 (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarydecorations.pathreplacing.code.tex
@@ -990,16 +1025,16 @@ s/tikzlibrarydecorations.pathreplacing.code.tex
 s/tikzlibrarydecorations.code.tex
 (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/modules/pgfmoduledecoration
 s.code.tex
-\pgfdecoratedcompleteddistance=\dimen338
-\pgfdecoratedremainingdistance=\dimen339
-\pgfdecoratedinputsegmentcompleteddistance=\dimen340
-\pgfdecoratedinputsegmentremainingdistance=\dimen341
-\pgf@decorate@distancetomove=\dimen342
-\pgf@decorate@repeatstate=\count387
-\pgfdecorationsegmentamplitude=\dimen343
-\pgfdecorationsegmentlength=\dimen344
+\pgfdecoratedcompleteddistance=\dimen342
+\pgfdecoratedremainingdistance=\dimen343
+\pgfdecoratedinputsegmentcompleteddistance=\dimen344
+\pgfdecoratedinputsegmentremainingdistance=\dimen345
+\pgf@decorate@distancetomove=\dimen346
+\pgf@decorate@repeatstate=\count395
+\pgfdecorationsegmentamplitude=\dimen347
+\pgfdecorationsegmentlength=\dimen348
 )
-\tikz@lib@dec@box=\box108
+\tikz@lib@dec@box=\box110
 )
 (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/decorations/pgfli
 brarydecorations.pathreplacing.code.tex))
@@ -1014,31 +1049,31 @@ y)
 sty))
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\\' on input line 79.
+(hyperref)                removing `\\' on input line 89.
 
 (./rnn_slides.aux)
 \openout1 = `rnn_slides.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1074,7 +1109,7 @@ LaTeX Font Info:    ... okay on input line 83.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 83.
+Package hyperref Info: Link coloring OFF on input line 93.
 (./rnn_slides.out) (./rnn_slides.out)
 \@outlinefile=\write5
 \openout5 = `rnn_slides.out'.
@@ -1115,76 +1150,76 @@ Package fontspec Info:
 
 \symlegacymaths=\mathgroup6
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 83.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 83.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 83.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 83.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 83.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 83.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 83.
-LaTeX Font Info:    Redeclaring math accent \check on input line 83.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 83.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 83.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 83.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 83.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 93.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 93.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 93.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 93.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 93.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 93.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 93.
+LaTeX Font Info:    Redeclaring math accent \check on input line 93.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 93.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 93.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 93.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 93.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 83.
+(Font)              `operators' in the math version `normal' on input line 93.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/TimesNewRoman(0)/m/n on input line 8
+(Font)                  OT1/cmr/m/n --> TU/TimesNewRoman(0)/m/n on input line 9
 3.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 83.
+(Font)              `operators' in the math version `bold' on input line 93.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/m/n on input line 
-83.
+93.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/m/n on 
-input line 83.
+input line 93.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
 (Font)                  OT1/cmr/m/it --> TU/TimesNewRoman(0)/m/it on input line
- 83.
+ 93.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
 (Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/b/n on input line 
-83.
+93.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
 (Font)                  OT1/cmss/m/n --> TU/TimesNewRoman(0)/m/n on input line 
-83.
+93.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 83.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 93.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/b/n on 
-input line 83.
+input line 93.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> TU/TimesNewRoman(0)/b/it on input lin
-e 83.
+e 93.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
 (Font)                  OT1/cmss/bx/n --> TU/TimesNewRoman(0)/b/n on input line
- 83.
+ 93.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 83.
-
-No file rnn_slides.nav.
-[1
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 93.
+\c@lstlisting=\count396
+ (./rnn_slides.nav) [1
 
 ]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 119
+LaTeX Font Info:    Trying to load font information for U+msa on input line 129
 .
- (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 119
+LaTeX Font Info:    Trying to load font information for U+msb on input line 129
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1198,39 +1233,62 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 ] [5
 
-] [6
+]
+\openout4 = `rnn_slides.vrb'.
 
-] [7
-
-] [8
+ (./rnn_slides.vrb
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2025/11/14 1.11b listings language file
+)) [6
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 297--297
-[]|\TU/TimesNewRoman(0)/m/n/10 Recurrent Neural Network
- []
+\openout4 = `rnn_slides.vrb'.
 
 
-Underfull \hbox (badness 4328) in paragraph at lines 297--297
-[]|\TU/TimesNewRoman(0)/m/n/10 Cố định cứng, phải đệm
- []
+(./rnn_slides.vrb) [7
 
-[9
+]
+\openout4 = `rnn_slides.vrb'.
+
+ (./rnn_slides.vrb) [8
+
+]
+\openout4 = `rnn_slides.vrb'.
+
+ (./rnn_slides.vrb) [9
 
 ] [10
 
-] [11
+]
+[11
 
 ] [12
 
-] [13
+]
+Overfull \vbox (4.405pt too high) detected at line 633
+ []
 
-] [14
+[13
 
-] [15
+]
+Overfull \vbox (6.58301pt too high) detected at line 681
+ []
+
+[14
+
+]
+Overfull \vbox (3.0678pt too high) detected at line 772
+ []
+
+[15
 
 ] [16
 
-] [17
+]
+Overfull \vbox (1.51132pt too high) detected at line 950
+ []
+
+[17
 
 ] [18
 
@@ -1240,52 +1298,110 @@ Underfull \hbox (badness 4328) in paragraph at lines 297--297
 
 ] [21
 
-]
-Missing character: There is no ` ("60) in font nullfont!
-Missing character: There is no ` ("60) in font nullfont!
-Missing character: There is no ` ("60) in font nullfont!
-Missing character: There is no ` ("60) in font nullfont!
-Missing character: There is no ` ("60) in font nullfont!
-Missing character: There is no ` ("60) in font nullfont!
-[22
+] [22
 
 ] [23
 
+] [24
+
+] [25
+
+] [26
+
+] [27
+
+] [28
+
+] [29
+
 ]
-Underfull \hbox (badness 6691) in paragraph at lines 697--697
+\openout4 = `rnn_slides.vrb'.
+
+
+(./rnn_slides.vrb) [30
+
+]
+\openout4 = `rnn_slides.vrb'.
+
+ (./rnn_slides.vrb)
+Overfull \vbox (0.35178pt too high) detected at line 1395
+ []
+
+[31
+
+] [32
+
+]
+Underfull \hbox (badness 6691) in paragraph at lines 1493--1493
 []|\TU/TimesNewRoman(0)/b/n/10 RNN THUẦN \TU/TimesNewRoman(0)/m/n/10 (1986-
  []
 
 
-Underfull \hbox (badness 3343) in paragraph at lines 697--697
-[]|\TU/TimesNewRoman(0)/b/n/10 LSTM / GRU \TU/TimesNewRoman(0)/m/n/10 (1997-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
+Underfull \hbox (badness 10000) in paragraph at lines 1493--1493
 []|\TU/TimesNewRoman(0)/b/n/10 TRANSFORMER
  []
 
 
-Underfull \hbox (badness 4378) in paragraph at lines 697--697
-[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Chỉ phù hợp chuỗi
+Underfull \hbox (badness 2285) in paragraph at lines 1493--1493
+[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Ngữ cảnh hai chiều
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 697--697
-[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Chuẩn mực Time-
+Underfull \hbox (badness 2772) in paragraph at lines 1493--1493
+[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Gấp đôi nhánh tính
  []
 
 
-Underfull \hbox (badness 5622) in paragraph at lines 697--697
+Underfull \hbox (badness 2103) in paragraph at lines 1493--1493
+[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Dự báo offline theo
+ []
+
+
+Underfull \hbox (badness 5622) in paragraph at lines 1493--1493
 []|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Thống trị lĩnh vực
  []
 
 
-Overfull \vbox (6.3044pt too high) detected at line 697
+Overfull \vbox (12.31621pt too high) detected at line 1493
  []
 
-[24
+[33
+
+] [34
+
+] [35
+
+] [36
+
+] [37
+
+]
+\openout4 = `rnn_slides.vrb'.
+
+ (./rnn_slides.vrb) [38
+
+]
+\openout4 = `rnn_slides.vrb'.
+
+ (./rnn_slides.vrb) [39
+
+]
+\openout4 = `rnn_slides.vrb'.
+
+
+(./rnn_slides.vrb
+File: images/rnn_training_loss.png Graphic file (type bmp)
+<images/rnn_training_loss.png>
+) [40
+
+]
+File: images/rnn_actual_vs_pred.png Graphic file (type bmp)
+<images/rnn_actual_vs_pred.png>
+File: images/rnn_residual_scatter.png Graphic file (type bmp)
+<images/rnn_residual_scatter.png>
+ [41
+
+] [42
 
 ]
 \tf@nav=\write6
@@ -1306,12 +1422,12 @@ Package rerunfilecheck Info: File `rnn_slides.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 31289 strings out of 468168
- 700944 string characters out of 5432815
- 1143375 words of memory out of 5000000
- 59376 multiletter control sequences out of 15000+600000
- 637787 words of font info for 113 fonts, out of 8000000 for 9000
+ 33612 strings out of 468168
+ 743746 string characters out of 5432815
+ 1452239 words of memory out of 5000000
+ 61648 multiletter control sequences out of 15000+600000
+ 637843 words of font info for 120 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,14n,123p,423b,1251s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,27n,123p,423b,1771s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on rnn_slides.pdf (24 pages).
+Output written on rnn_slides.pdf (42 pages).

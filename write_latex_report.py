@@ -205,9 +205,17 @@ latex_content = r"""\documentclass[12pt,a4paper]{article}
 \addcontentsline{toc}{section}{TÓM TẮT BÁO CÁO (ABSTRACT)}
 \section*{TÓM TẮT BÁO CÁO (ABSTRACT)}
 
-Báo cáo Kỹ thuật Assignment 06 trình bày nghiên cứu hệ thống và khảo sát thực nghiệm chuyên sâu về Mạng nơ-ron Hồi quy (Recurrent Neural Network -- RNN). Mục tiêu của báo cáo là hệ thống hóa toàn bộ vòng đời phát triển của một bài toán Deep Learning dành riêng cho chuỗi thời gian: từ khâu am hiểu cơ sở toán học thuần túy, phân tích khám phá đặc trưng phân phối dữ liệu (EDA), cho đến hiện thực hóa mã nguồn (bằng NumPy, PyTorch, Keras) và cuối cùng là triển khai lên một hệ thống Web Dashboard hoàn chỉnh.
+Báo cáo Kỹ thuật Assignment 06 trình bày nghiên cứu hệ thống và khảo sát thực nghiệm chuyên sâu về Mạng nơ-ron Hồi quy (Recurrent Neural Network -- RNN), tập trung vào **bản chất giải tích của dữ liệu chuỗi thời gian và sự lưu trữ trạng thái ẩn (Hidden State)**. Tiếp nối tinh thần từ Assignment 05 về "Hợp hàm toán học", báo cáo này làm rõ cách thức mà một mạng nơ-ron học được những phụ thuộc thời gian (Temporal Dependencies) thông qua các vòng lặp phản hồi và thuật toán Backpropagation Through Time (BPTT).
 
-Báo cáo phân tích sâu sắc các rào cản kinh điển của chuỗi thời gian như: Tại sao mạng MLP hay Conv1D không đủ năng lực xử lý? Ma trận Jacobian ảnh hưởng như thế nào đến sự suy thoái Gradient? Làm thế nào để giải quyết bằng kỹ thuật Gradient Clipping? Thông qua việc đối chuẩn trên 2 tập dữ liệu tài chính thực tế (Gold Price và AMZN Stock), báo cáo đã bóc tách rõ ràng hiện tượng "Trễ pha" (Lagging) - một đặc trưng của Vanilla RNN khi cố gắng mô phỏng một quy luật bước đi ngẫu nhiên (Random Walk) trên thị trường tài chính.
+Báo cáo không chỉ khảo sát mặt lý thuyết mà còn tiến hành bóc tách toàn diện vấn đề **Vanishing Gradient** (Suy thoái Gradient), rào cản lớn nhất của Vanilla RNN. Về phương diện thực hành, báo cáo thực hiện 3 bước triển khai độc lập: (1) **Xây dựng RNN thuần (From Scratch)** hoàn toàn bằng NumPy; (2) **Triển khai bằng PyTorch**; và (3) **Triển khai bằng Keras/TensorFlow**.
+
+Hai tập dữ liệu tài chính thực tế mang đặc thù chuỗi thời gian được phân tích và đánh giá:
+\begin{enumerate}[leftmargin=*]
+    \item **Gold Price (Giá Vàng Thế Giới)**: Dữ liệu vĩ mô dài hạn từ năm 1968, với các chu kỳ đột biến đan xen chu kỳ bão hòa.
+    \item **AMZN Stock (Cổ phiếu Amazon)**: Dữ liệu chứng khoán thị trường biến động mạnh, tần suất dao động cao.
+\end{enumerate}
+
+Cùng với 7 sổ tay Jupyter, dự án còn tích hợp một hệ thống phần mềm hoàn chỉnh bao gồm Backend (FastAPI) và Frontend tương tác cho phép chọn khoảng thời gian tùy chỉnh để vẽ biểu đồ trực quan giữa Giá Thực tế (Actual) và Giá Dự báo (Prediction). Kết quả cuối cùng mở ra những góc nhìn sâu sắc về hiện tượng "trễ pha" (Lagging) cố hữu của RNN cổ điển, tạo tiền đề để chuyển giao lên các kiến trúc tiên tiến hơn như LSTM và GRU.
 
 \newpage
 
@@ -220,15 +228,23 @@ Báo cáo phân tích sâu sắc các rào cản kinh điển của chuỗi th�
 \markboth{TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT}{TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT}
 
 \subsection*{1. Kho Lưu Trữ Mã Nguồn Chính Thức}
-\begin{mybox}{Thông Tin Kho Chứa Dự Án}
+\begin{mybox}{Thông Tin Kho Chứa Dự Án \& Đường Dẫn Trực Tuyến}
     \begin{itemize}[leftmargin=*]
-        \item \textbf{Kho lưu trữ GitHub chính thức:} \href{https://github.com/HandQ2212/intel-sys-assignment-06}{\url{https://github.com/HandQ2212/intel-sys-assignment-06}}
         \item \textbf{Tác giả thực hiện:} Nguyễn Nam Hải (Mã SV: B23DCCN277 -- Lớp D23CTPM01)
-        \item \textbf{Cấu trúc hệ thống:}
+        \item \textbf{Cấu trúc sổ tay Notebook (7 files):}
         \begin{itemize}
-            \item \texttt{notebooks/}: Chứa 7 file Jupyter Notebook huấn luyện.
-            \item \texttt{backend/}: Chứa mã nguồn FastAPI nạp mô hình.
-            \item \texttt{backend/static/}: Chứa mã nguồn Dashboard UI vẽ biểu đồ.
+            \item \texttt{01\_rnn\_theory\_and\_mathematics.ipynb}
+            \item \texttt{02\_eda\_and\_data\_diagnostics.ipynb}
+            \item \texttt{03\_pytorch\_amzn.ipynb}
+            \item \texttt{04\_pytorch\_gold.ipynb}
+            \item \texttt{05\_keras\_amzn.ipynb}
+            \item \texttt{06\_keras\_gold.ipynb}
+            \item \texttt{07\_numpy\_rnn\_gold.ipynb}
+        \end{itemize}
+        \item \textbf{Cấu trúc Web Dashboard:}
+        \begin{itemize}
+            \item \texttt{backend/main.py}: API viết bằng FastAPI, nạp sẵn 4 pre-trained models.
+            \item \texttt{backend/static/index.html}: Giao diện Dashboard tương tác hiện đại với Tailwind và Chart.js.
         \end{itemize}
     \end{itemize}
 \end{mybox}
@@ -239,14 +255,14 @@ Báo cáo phân tích sâu sắc các rào cản kinh điển của chuỗi th�
 \small
 \begin{tabularx}{\textwidth}{l L{3.2cm} X L{4.2cm}}
 \toprule
-\textbf{Bộ dữ liệu} & \textbf{Quy mô \& Kiểu} & \textbf{Đặc tả Đầu vào} & \textbf{Nguồn / Kaggle Link} \\
+\textbf{Bộ dữ liệu} & \textbf{Thời gian} & \textbf{Đặc tả Đầu vào Mạng RNN} & \textbf{Tệp nguồn} \\
 \midrule
-\textbf{1. AMZN} & Chứng khoán (1997-2023) & Tensor 3D: $(B, 30, 1)$ & \href{https://www.kaggle.com/datasets/henryshan/amazon-com-inc-amzn}{\texttt{kaggle: henryshan/...}} \\
+\textbf{1. AMZN} & 1997 -- 2023 & Chuỗi $T=30$, Tensor $(B, 30, 1)$ & \texttt{data/AMZN.csv} \\
 \addlinespace
-\textbf{2. Gold} & Giá vàng vĩ mô (1968-2021) & Tensor 3D: $(B, 30, 1)$ & \href{https://www.kaggle.com/datasets/lbronchal/gold-and-silver-prices-dataset}{\texttt{kaggle: lbronchal/...}} \\
+\textbf{2. Gold Price} & 1968 -- 2021 & Chuỗi $T=30$, Tensor $(B, 30, 1)$ & \texttt{data/gold\_price.csv} \\
 \bottomrule
 \end{tabularx}
-\caption{Tổng hợp đặc tả và nguồn Kaggle của 2 bộ dữ liệu thực nghiệm}
+\caption{Tổng hợp đặc tả của 2 bộ dữ liệu thực nghiệm trong Assignment 06}
 \label{tab:datasets_spec}
 \end{table}
 
@@ -255,207 +271,143 @@ Báo cáo phân tích sâu sắc các rào cản kinh điển của chuỗi th�
 % ==============================================================================
 % CHƯƠNG 1
 % ==============================================================================
-\section{Cơ sở lý thuyết giải tích và toán học của RNN}
+\section{Cơ sở lý thuyết giải tích và bản chất của mạng RNN}
 
-\subsection{Dữ liệu chuỗi \& tensor ba chiều}
-Trong lĩnh vực trí tuệ nhân tạo, dữ liệu chuỗi (Sequential Data) mang một đặc tính cốt lõi khác biệt hoàn toàn với ảnh hoặc bảng biểu tĩnh: **Thứ tự của dữ liệu mang ý nghĩa quyết định**. Ví dụ, trong chuỗi thời gian (Time-series), giá trị của biến tại thời điểm $t$ phụ thuộc mật thiết vào các sự kiện diễn ra tại $t-1, t-2, \dots$
-Để máy tính có thể xử lý, dữ liệu chuỗi được biểu diễn dưới dạng **Tensor 3 chiều (3D Tensor)** với cấu trúc định dạng: \texttt{(Batch Size, Sequence Length, Input Features)}.
-\begin{itemize}
-    \item \textbf{Batch Size (Kích thước lô):} Số lượng chuỗi độc lập được xử lý song song trong một lần truyền xuôi (Forward pass).
-    \item \textbf{Sequence Length (Độ dài chuỗi - $T$):} Số mốc thời gian (time steps) có trong một chuỗi đơn. Ví dụ $T=30$ ngày.
-    \item \textbf{Input Features (Đặc trưng đầu vào):} Kích thước không gian vector của mỗi mốc thời gian. Với giá vàng chỉ có 1 cột giá trị, số features bằng 1.
-\end{itemize}
+\subsection{Deep Learning dưới góc nhìn Chuỗi thời gian và Mạng Hồi quy}
+Tương tự như cách mạng CNN tận dụng tính định xứ của không gian 2D, mạng RNN (Recurrent Neural Network) tận dụng tính định hướng của chiều thời gian 1D. Đối với các chuỗi thời gian như giá chứng khoán hay thời tiết, thứ tự của dữ liệu $X = \{x_1, x_2, \dots, x_t\}$ mang ý nghĩa quyết định.
 
-\subsection{Các dạng bài toán chuỗi}
-Dựa trên kiến trúc của mạng RNN, bài toán dữ liệu chuỗi được phân loại thành 4 dạng kinh điển:
-\begin{enumerate}
-    \item \textbf{One-to-One:} Bản chất là bài toán mạng Feed Forward (MLP) thông thường, kích thước chuỗi là 1.
-    \item \textbf{One-to-Many:} Mạng nhận một đầu vào duy nhất (ví dụ: một bức ảnh) và sinh ra một chuỗi đầu ra (ví dụ: câu văn chú thích - Image Captioning).
-    \item \textbf{Many-to-One:} Mạng nhận một chuỗi thời gian làm đầu vào và đưa ra một dự đoán duy nhất ở bước cuối cùng. (Đây chính là bài toán dự báo chứng khoán/giá vàng trong đồ án này).
-    \item \textbf{Many-to-Many:} Có hai phân nhóm: 
-        \begin{itemize}
-            \item \textit{Đồng bộ (Synced):} Mỗi bước đầu vào đều có một đầu ra tương ứng (ví dụ: Gán nhãn từ loại cho từng chữ trong câu).
-            \item \textit{Bất đồng bộ (Encoder-Decoder):} Đọc hết một chuỗi rồi mới sinh ra một chuỗi khác (ví dụ: Dịch máy - Machine Translation).
-        \end{itemize}
-\end{enumerate}
+RNN thay thế giả định Độc lập và Cùng phân phối (IID - Independent and Identically Distributed) của các mô hình cơ bản bằng cách thiết lập một liên kết (Hidden State $h_t$) lưu lại toàn bộ tri thức của các mốc thời gian quá khứ $t'<t$.
 
-\subsection{Vì sao MLP và Conv1D chưa đủ?}
-Trước khi có RNN, kỹ sư thường dùng Mạng Đa tầng (MLP) hoặc Tích chập 1 chiều (Conv1D) để xử lý chuỗi:
-\begin{itemize}
-    \item \textbf{Hạn chế của MLP:} MLP bắt buộc kích thước đầu vào phải cố định. Nếu nối (flatten) toàn bộ 30 mốc thời gian thành một vector $1D$, MLP sẽ gán các trọng số độc lập cho từng mốc thời gian. Điều này phá vỡ tính tịnh tiến qua thời gian (Translation Invariance) và không thể chia sẻ tri thức learned pattern (ví dụ một mẫu tăng giá) nếu nó xuất hiện ở các vị trí khác nhau trong chuỗi.
-    \item \textbf{Hạn chế của Conv1D:} Conv1D sử dụng bộ lọc (filter) trượt dọc theo chiều thời gian. Mặc dù có tính chia sẻ tham số (Parameter sharing) cục bộ, Conv1D chỉ nắm bắt được **phụ thuộc ngắn hạn (Short-term dependencies)** theo kích thước kernel. Nó thiếu một "bộ nhớ" toàn cục (Global memory) để ghi nhận chuỗi sự kiện nối tiếp.
-\end{itemize}
-
-\subsection{Simple RNN (Vanilla RNN)}
-Để giải quyết những bài toán trên, mạng RNN (Simple RNN / Vanilla RNN) ra đời với khái niệm **Trạng thái Ẩn (Hidden State - $h_t$)**. Trạng thái ẩn đóng vai trò như "trí nhớ ngắn hạn" của mạng, được cập nhật liên tục qua mỗi mốc thời gian $t$.
-
-Tại mỗi bước $t$, Simple RNN áp dụng nguyên lý **Chia sẻ tham số (Parameter Sharing)**: Các ma trận $U$ (Input-to-Hidden), $W$ (Hidden-to-Hidden) và $V$ (Hidden-to-Output) được dùng chung cho tất cả các mốc thời gian. 
-Phương trình truyền xuôi:
-\begin{align}
-    h_t &= \tanh(U x_t + W h_{t-1} + b_h) \\
-    \hat{y}_t &= V h_t + b_y
-\end{align}
-Cơ chế chia sẻ tham số giúp mô hình khái quát hóa tốt hơn và xử lý được các chuỗi có độ dài thay đổi liên tục.
-
-\subsection{Lan truyền ngược (BPTT) và vấn đề của gradient}
-Để huấn luyện Simple RNN, thuật toán **Backpropagation Through Time (BPTT)** được sử dụng. BPTT thực chất là trải phẳng mạng RNN theo thời gian thành một mạng sâu $T$ tầng, sau đó áp dụng truyền lỗi ngược (Backprop).
-
-\begin{mybox}{Khảo sát phổ (Spectral Analysis) của ma trận $W$}
-Khi lan truyền ngược $k$ bước thời gian, thành phần $dh_{t-k}$ phụ thuộc vào tích Jacobian:
+\subsection{Toán tử tính toán trạng thái ẩn (Hidden State)}
+Thay vì tính $\hat{y}_t = f(x_t)$, RNN định nghĩa một hàm truy hồi (Recurrence Relation):
 \begin{equation}
-    \frac{\partial h_t}{\partial h_{t-k}} = \prod_{i=t-k+1}^{t} \left[ W^T \text{diag}(1 - \tanh^2(...)) \right]
+    h_t = \sigma_h (U x_t + W h_{t-1} + b_h)
 \end{equation}
-Nếu $\lambda$ là các giá trị riêng lớn nhất của ma trận $W$:
-\begin{itemize}
-    \item Khi $\vert{}\lambda\vert{} > 1$: Lũy thừa ma trận làm cho đạo hàm phình to hàm mũ, gây ra \textbf{Exploding Gradient} (bùng nổ Gradient). Mô hình vỡ quỹ đạo hội tụ (NaN/Inf).
-    \item Khi $\vert{}\lambda\vert{} < 1$: Đạo hàm liên tục nhân với các số $< 1$ (do $\tanh' \le 1$), dẫn tới \textbf{Vanishing Gradient} (suy thoái Gradient). Mạng không thể "nhớ" được các thông tin cách đó quá nhiều bước thời gian.
-\end{itemize}
+\begin{equation}
+    \hat{y}_t = \sigma_y (V h_t + b_y)
+\end{equation}
+Trong đó $U, W, V$ lần lượt là các ma trận trọng số tương tác Input-to-Hidden, Hidden-to-Hidden, và Hidden-to-Output. Ma trận $W$ là trái tim của RNN, định tuyến thông tin từ quá khứ $h_{t-1}$ đi tới hiện tại $h_t$.
+
+\subsection{Thuật toán BPTT (Backpropagation Through Time)}
+Thuật toán huấn luyện chuẩn của RNN được gọi là BPTT. Về bản chất, ta khai triển (unroll) toàn bộ đồ thị tính toán của mạng theo số bước thời gian $T$. Đạo hàm của hàm mục tiêu (Loss) $L$ theo ma trận $W$ là tổng của Gradient tại tất cả các thời điểm:
+\begin{equation}
+    \frac{\partial L}{\partial W} = \sum_{t=1}^{T} \frac{\partial L_t}{\partial W}
+\end{equation}
+Việc tính toán $\frac{\partial L_t}{\partial W}$ đòi hỏi phải truyền lỗi ngược từ thời điểm $t$ về tới mốc thời điểm $k=1$.
+
+\subsection{Bài toán Vanishing Gradient (Suy thoái Gradient)}
+\begin{mybox}{Phân tích giải tích Ma trận Jacobian}
+Khi áp dụng luật chuỗi (Chain Rule) để tính đạo hàm trạng thái ẩn $h_t$ theo một trạng thái ẩn trong quá khứ $h_k$ ($k < t$), ta phải nhân liên tiếp các ma trận Jacobian cục bộ:
+\begin{equation}
+    \frac{\partial h_t}{\partial h_k} = \prod_{i=k+1}^{t} \frac{\partial h_i}{\partial h_{i-1}}
+\end{equation}
+Vì $h_i = \tanh(W h_{i-1} + \dots)$, đạo hàm $\frac{\partial h_i}{\partial h_{i-1}}$ có dạng:
+\begin{equation}
+    \frac{\partial h_i}{\partial h_{i-1}} = W^T \text{diag}\left( 1 - \tanh^2(u_i) \right)
+\end{equation}
+Chuỗi phép nhân ma trận $W^T$ lặp lại $t - k$ lần sẽ làm cho Norm của ma trận Gradient tăng hoặc giảm theo quy luật hàm mũ. Nếu Eigenvalues lớn nhất của $W < 1$, toàn bộ tích trên sẽ tiến về mốc $0$, khiến mạng "quên" hoàn toàn các biến cố xảy ra ở quá khứ xa. Đây là giới hạn toán học chí mạng của Vanilla RNN.
 \end{mybox}
-
-\subsection{Giải pháp Kỹ thuật: Gradient Clipping}
-Trong khi Vanishing Gradient đòi hỏi thay đổi cả cấu trúc mạng (sang LSTM/GRU), thì \textbf{Exploding Gradient} có thể giải quyết dứt điểm bằng một kỹ thuật số học cực kỳ thanh lịch: \textbf{Gradient Clipping}.
-Ý tưởng: Theo dõi chuẩn (Norm) của toàn bộ vector Gradient. Nếu Norm vượt qua một ngưỡng $threshold$, ta sẽ thực hiện co rút (scale down) toàn bộ vector gradient theo tỷ lệ để Norm của nó vừa đúng bằng $threshold$.
-\begin{equation}
-    \text{Nếu } \|g\| > \text{threshold}, \quad g \leftarrow g \cdot \frac{\text{threshold}}{\|g\|}
-\end{equation}
-Điều này giúp giữ nguyên "hướng" (Direction) của Gradient để mạng vẫn học đúng quy luật, nhưng giới hạn "độ lớn" (Magnitude) để bước nhảy trọng số không phá vỡ mô hình.
-
 
 % ==============================================================================
 % CHƯƠNG 2
 % ==============================================================================
-\section{Khảo sát dữ liệu chuỗi thực tế (Data Diagnostics)}
+\section{Khảo sát 2 tập dữ liệu thực nghiệm}
 
-\subsection{Nguồn \& Quy mô data}
-Để có góc nhìn bao quát, đồ án kiểm thử mô hình trên hai bộ dữ liệu đặc thù:
-\begin{enumerate}
-    \item \textbf{Gold Price (Giá vàng):} Thu thập từ tập dữ liệu vĩ mô (1968 - 2021). Với hơn 13,462 bản ghi giao dịch ngày, độ dài bộ dữ liệu đủ sâu để RNN tìm thấy những chu kỳ (cycles) kéo dài hàng chục năm.
-    \item \textbf{AMZN Stock (Chứng khoán Amazon):} Trích xuất từ Yahoo Finance (1997 - 2023) với 6,682 mẫu. Phản ánh bức tranh thị trường đầy khốc liệt của ngành công nghệ.
-\end{enumerate}
-
-\subsection{Phân phối và biến động}
-Việc nắm bắt phân phối thống kê là bước tiên quyết trước khi đưa dữ liệu vào mạng Deep Learning.
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|l|c|c|c|c|c|c|}
-        \hline
-        \textbf{Dataset} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} & \textbf{Skewness} & \textbf{Kurtosis} \\
-        \hline
-        AMZN Close & 43.14 & 54.33 & 0.06 & 186.57 & 1.34 & 0.52 \\
-        \hline
-        Gold Price & 585.34 & 483.91 & 35.10 & 2067.15 & 1.05 & 0.08 \\
-        \hline
-    \end{tabular}
-    \caption{Bảng thống kê mô tả phân phối.}
-\end{table}
-Nhìn vào độ lệch chuẩn (Std), cả hai tập dữ liệu đều mang độ phân tán rất cao. Hệ số Skewness dương $> 1.0$ cho thấy phân phối lệch phải (Right-skewed), tập trung ở vùng giá thấp và kéo dài đuôi ra vùng giá bùng nổ (bong bóng kinh tế/công nghệ).
+\subsection{Tập dữ liệu chuỗi thời gian Giá Vàng (Gold Price)}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\linewidth]{eda_gold.png}
-    \caption{Biểu đồ thể hiện biến động giá Vàng, một dạng chuỗi Không dừng (Non-Stationary).}
+    \caption{Chuỗi thời gian biến động giá vàng (1968-2021).}
+    \label{fig:eda_gold}
+\end{figure}
+Như thể hiện tại Hình \ref{fig:eda_gold}, dữ liệu có xu hướng dài hạn (Long-term Trend) và không có tính dừng (Non-stationary). Các đỉnh đột biến thường liên kết mật thiết với khủng hoảng kinh tế toàn cầu.
+
+\subsection{Tập dữ liệu chuỗi thời gian Chứng khoán (AMZN)}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{eda_amzn.png}
+    \caption{Sự bùng nổ của cổ phiếu AMZN từ giai đoạn 2010 trở đi.}
+    \label{fig:eda_amzn}
 \end{figure}
 
-\subsection{Tuỳ đặc trưng mỗi data mà làm tiếp}
-Chuỗi thời gian trong tài chính hầu như đều vi phạm giả thuyết dừng (Stationarity). Kiểm định Augmented Dickey-Fuller (ADF) trên chuỗi giá thô (Raw price) của cả Gold và AMZN đều cho $p\text{-value} > 0.05$. 
-
-Tùy vào mục tiêu bài toán mà kỹ thuật tiền xử lý sẽ phân nhánh:
-\begin{itemize}
-    \item \textbf{Nếu tập trung vào tỷ suất sinh lời:} Bắt buộc phải chuyển đổi chuỗi giá $P_t$ thành chuỗi lợi suất Log (Log Returns): $R_t = \ln(P_t/P_{t-1})$. Chuỗi $R_t$ này ngay lập tức thỏa mãn tính dừng (p-value $< 0.01$), giúp RNN tối ưu gradient ổn định hơn.
-    \item \textbf{Nếu bắt buộc phải dự báo giá tuyệt đối (Nhiệm vụ của Assignment):} Ta vẫn giữ nguyên chuỗi giá $P_t$, nhưng bắt buộc phải khử nhiễu thang đo (Scale) bằng \texttt{MinMaxScaler}. Áp dụng cấu trúc Cửa sổ trượt (Sliding Window) $T=30$ để trích xuất 30 đặc trưng liên hoàn nạp vào tensor đầu vào của mạng RNN.
-\end{itemize}
-
+\subsection{Cơ chế Cửa sổ trượt (Sliding Window)}
+Để huấn luyện mô hình dự đoán giám sát, ta phải kiến tạo một cơ sở dữ liệu giám sát từ mảng 1 chiều. Phép biến đổi Sliding Window với $Seq\_length = 30$ tạo ra ma trận $X$ kích thước $(N, 30, 1)$ và nhãn tương ứng $Y$ kích thước $(N, 1)$. Đồng thời, ta thực hiện chia tách Train/Test theo thời gian thực (không tráo đổi - Shuffle).
 
 % ==============================================================================
 % CHƯƠNG 3
 % ==============================================================================
-\section{Thiết kế và cài đặt mô hình}
+\section{Thiết kế và cài đặt mô hình (NumPy, PyTorch, Keras)}
 
-\subsection{Trình bày thuật toán \& Cấu hình kỹ thuật}
-Báo cáo trình bày 3 phiên bản mã nguồn: NumPy thuần (dùng để chứng minh toán học BPTT), PyTorch và Keras. 
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|l|l|l|}
-        \hline
-        \textbf{Thông số} & \textbf{PyTorch} & \textbf{Keras} \\
-        \hline
-        API / Base Class & \texttt{nn.RNN} & \texttt{Sequential} \\
-        Hidden Size & 64 & 64 \\
-        Optimizer & Adam ($lr=0.001$) & Adam ($lr=0.001$) \\
-        Weight Init & Uniform (Default) & Orthogonal / Glorot \\
-        Chống Exploding & \texttt{clip\_grad\_norm\_} & \texttt{clipnorm=1.0} \\
-        \hline
-    \end{tabular}
-    \caption{Đối chuẩn cấu hình hệ thống huấn luyện.}
-\end{table}
+\subsection{Xây dựng Vanilla RNN thuần từ con số 0 bằng NumPy}
+Nhằm nắm vững cơ chế giải tích, Notebook \texttt{07\_numpy\_rnn\_gold.ipynb} định nghĩa toàn bộ mạng RNN thuần không sử dụng framework Deep Learning.
+\begin{itemize}
+    \item Khởi tạo bộ tham số ma trận $U, W, V$ kích thước tùy chỉnh.
+    \item Xây dựng vòng lặp For-loop cập nhật trạng thái ẩn (Forward Pass).
+    \item Tự xây dựng hàm Gradient (BPTT) cho từng tham số với kỹ thuật kẹp (Gradient Clipping) để tránh tràn bộ nhớ.
+\end{itemize}
 
-\subsection{Bóc tách sâu về Nghịch lý Directional Accuracy}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\linewidth]{res_amzn.png}
-    \caption{Đường cong dự báo (Test Split) trên tập AMZN.}
-\end{figure}
-Chỉ số **Độ chính xác Hướng (Directional Accuracy)** của mô hình đo lường khả năng đoán đúng chiều (tăng hay giảm) của giá trị:
-\begin{equation}
-    DA = \frac{1}{N-1} \sum_{t=1}^{N-1} \mathbb{I}\left( \text{sign}(y_{t+1} - y_t) == \text{sign}(\hat{y}_{t+1} - y_t) \right)
-\end{equation}
-Tại sao DA của mô hình RNN trên AMZN chỉ đạt xấp xỉ 50\% (ngang ngửa việc tung đồng xu), trong khi biểu đồ dự đoán lại bám rất sát Ground Truth?
-Bởi vì Vanilla RNN bị cuốn vào hiệu ứng "Lagging" (Trễ pha). Để giảm thiểu hàm phạt Loss (MSE) lớn, mô hình đã học được một mánh khóe: Giá ngày mai gần như bằng giá ngày hôm nay $\hat{y}_{t+1} \approx y_t$. Do đó, mô hình luôn dự báo chậm 1 nhịp so với đường cong thật, biến nó thành một bộ lọc trễ pha hơn là một công cụ dự đoán xu hướng tương lai.
+\subsection{Cài đặt mô hình bằng PyTorch}
+Module \texttt{nn.RNN} của PyTorch cho phép tính toán song song qua ma trận lớn trên GPU. Mạng được cấu hình với \texttt{hidden\_size=64} và \texttt{num\_layers=1}. Tại tầng ra, ta chỉ lấy lát cắt của trạng thái ẩn thời điểm $T$: \texttt{out[:, -1, :]} để ánh xạ ra $y_{pred}$.
 
+\subsection{Cài đặt mô hình bằng Keras/TensorFlow}
+Trong Keras, kiến trúc có phần ngắn gọn hơn thông qua API \texttt{Sequential}. \texttt{SimpleRNN(64, return\_sequences=False)} giúp bỏ qua các trạng thái ẩn trung gian, truyền thẳng kết quả tới hàm \texttt{Dense(1)}. Keras Callback \texttt{EarlyStopping} tự động cắt dứt chu trình nếu Validation Loss bão hòa.
 
 % ==============================================================================
 % CHƯƠNG 4
 % ==============================================================================
-\section{Triển khai Web App (Deployment Architecture)}
+\section{Kết quả thực nghiệm, đối chuẩn số liệu và phân tích chuyên sâu}
 
-Để đưa các mô hình nghiên cứu dạng \texttt{.pkl}, \texttt{.pth}, \texttt{.keras} vào thực tiễn, nhóm đã xây dựng một nền tảng Web Application (Web App) cung cấp giao diện trực quan phục vụ người dùng cuối (End-users).
+\subsection{Bảng tổng hợp đối chuẩn kết quả}
+Dữ liệu dưới đây trích xuất từ tập kiểm thử (Test Set) không nhìn thấy trong quá trình Train.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|}
+        \hline
+        \textbf{Mô hình} & \textbf{RMSE} & \textbf{MAE} & \textbf{MAPE} & \textbf{Độ chính xác Hướng} \\
+        \hline
+        PyTorch AMZN & 25.24 & 21.75 & 14.52\% & 49.07\% \\
+        \hline
+        Keras AMZN & 57.04 & 51.55 & 35.17\% & 49.79\% \\
+        \hline
+        PyTorch Gold & 425.98 & 398.62 & 28.65\% & 50.22\% \\
+        \hline
+        Keras Gold & 72.92 & 56.06 & 3.81\% & 50.42\% \\
+        \hline
+    \end{tabular}
+    \caption{Chỉ số đánh giá độ tin cậy của 4 mô hình}
+\end{table}
 
-\subsection{Kiến trúc hệ thống (System Architecture)}
-Hệ thống tuân theo kiến trúc Client-Server RESTful phân tách:
-\begin{itemize}
-    \item \textbf{Backend (Server):} Sử dụng vi khung (Microframework) **FastAPI** trên nền tảng Uvicorn xử lý luồng bất đồng bộ (Asynchronous). FastAPI có ưu điểm truy xuất vượt trội, tự động sinh tài liệu Swagger UI và đặc biệt thích hợp để triển khai các mô hình Machine Learning chạy nền.
-    \item \textbf{Frontend (Client):} Sử dụng **Vanilla JavaScript** kết hợp bộ thư viện tiện ích **Tailwind CSS** định kiểu giao diện hiện đại. Trọng tâm là thư viện **Chart.js** được dùng để vẽ lại chuỗi thời gian liên tục từ phản hồi (Response) của server.
-\end{itemize}
-
-\subsection{Quy trình Nạp mô hình (Model Loading)}
-Trong giai đoạn khởi động Server (Lifespan start-up), hệ thống quét toàn bộ thư mục \texttt{models/} để tiền tải (Pre-load) bộ 4 mô hình (PyTorch/Keras cho Gold/AMZN). Các lớp giả lập tensor như \texttt{TimeSeriesRNN} được nạp sẵn vào RAM, các file `MinMaxScaler` cũng được giải nén sẵn thông qua `pickle` để không tốn thời gian I/O đĩa cứng ở từng request của người dùng.
-
-\subsection{Giao diện (User Interface)}
+\subsection{Phân tích kết quả trên tập Giá Vàng và Chứng khoán}
 \begin{figure}[H]
     \centering
-    % Nơi người dùng sẽ thay thế bằng ảnh Screenshot thực tế
-    \includegraphics[width=0.95\linewidth]{dashboard_ui.png} 
-    \caption{Giao diện trực quan của Web Dashboard dự báo chuỗi thời gian (Người dùng thiết lập thông số truy vấn).}
-    \label{fig:web_dashboard}
+    \includegraphics[width=0.85\linewidth]{res_amzn.png}
+    \caption{Mô phỏng đường cong dự báo (Test Split) trên tập AMZN.}
+    \label{fig:res_amzn_test}
 \end{figure}
 
-Giao diện Web cung cấp Control Panel tinh giản:
-\begin{itemize}
-    \item Hộp thả chọn loại mô hình (AMZN - PyTorch, Gold - Keras, v.v...).
-    \item Bộ DatePicker cho phép người dùng khoanh vùng giới hạn thời gian dự báo (Start Date $\rightarrow$ End Date).
-    \item Khu vực trung tâm là đồ thị diện rộng của Chart.js, hiển thị màu sắc tương phản rõ rệt giữa đường Ground Truth và Prediction.
-\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{res_gold.png}
+    \caption{Mô phỏng đường cong dự báo trên tập Gold.}
+    \label{fig:res_gold_test}
+\end{figure}
 
-\subsection{Kiểm chứng hệ thống (Validation \& Testing)}
-Quy trình gọi suy luận (Inference) hoạt động trơn tru theo đường ống (Pipeline): 
-Người dùng gửi khoảng ngày $\to$ API \texttt{/predict\_range} tìm các chỉ số trong tệp CSV gốc $\to$ Cắt chuỗi mốc 30 ngày (Sliding Window) $\to$ Dịch chuyển qua \texttt{scaler.transform} $\to$ Chuyển vị thành ma trận Tensor $\to$ Chạy \texttt{model.forward()} $\to$ Dịch ngược bằng \texttt{inverse\_transform} $\to$ Trả về Client cấu trúc JSON chứa mảng ngày và giá trị để vẽ.
-Các bài kiểm thử hiệu năng cho thấy FastAPI phản hồi dữ liệu trong vòng dưới 200ms cho các truy vấn dữ liệu trải dài trên 5 năm.
+\subsection{Hiện tượng trễ pha (Lagging)}
+\begin{chartbox}[Nghịch lý Dự báo Trễ pha ở Chuỗi Thời gian Tài chính]
+Nhìn trực quan vào Hình \ref{fig:res_amzn_test} và Hình \ref{fig:res_gold_test}, ta thấy đường dự báo bám dính rất chặt vào đường Ground Truth. Nhưng khi phóng đại (Zoom-in), ta phát hiện giá trị dự báo thực chất luôn bị chậm (lag) đúng 1 nhịp so với thực tế: $\hat{y}_{t+1} \approx y_t$. 
+
+Bản chất của việc này là do hàm Loss (MSE) bị mắc kẹt tại cực tiểu cục bộ: Vì thị trường chứng khoán tuân theo luật Random Walk (Bác bỏ giả thuyết thị trường hiệu quả), nên việc dự đoán ngày mai giống y hệt ngày hôm nay là cách "an toàn" nhất để hệ thống nhận được mức phạt (MSE penalty) thấp nhất. Vanilla RNN vì không có bộ nhớ vĩnh cửu nên không đủ năng lực phát hiện các chuỗi Logic phức tạp, buộc phải thỏa hiệp bằng "Lagging".
+\end{chartbox}
 
 % ==============================================================================
-% TÀI LIỆU THAM KHẢO
+% CHƯƠNG 5
 % ==============================================================================
-\newpage
-\section*{Tài liệu tham khảo (References)}
-\addcontentsline{toc}{section}{Tài liệu tham khảo (References)}
-\begin{enumerate}[label={[\arabic*]}]
-    \item Goodfellow, I., Bengio, Y., \& Courville, A. (2016). \textit{Deep Learning}. MIT Press. (Chapter 10: Sequence Modeling: Recurrent and Recursive Nets).
-    \item Werbos, P. J. (1990). \textit{Backpropagation through time: what it does and how to do it}. Proceedings of the IEEE, 78(10), 1550-1560.
-    \item Hochreiter, S. (1991). \textit{Untersuchungen zu dynamischen neuronalen Netzen}. Diploma thesis, TU Munich.
-    \item Hochreiter, S., \& Schmidhuber, J. (1997). \textit{Long short-term memory}. Neural computation, 9(8), 1735-1780.
-    \item Lipton, Z. C., Berkowitz, J., \& Elkan, C. (2015). \textit{A critical review of recurrent neural networks for sequence learning}. arXiv preprint arXiv:1506.00019.
-\end{enumerate}
+\section{Kết luận chung}
+Toàn bộ Assignment 06 đã hiện thực hóa từ A-Z một quy trình Deep Learning cho Time Series. Báo cáo đã minh chứng được khả năng trích xuất tri thức tuần tự của RNN cũng như vạch trần các yếu điểm cố hữu (Vanishing Gradient, Lagging). Hệ thống báo cáo cùng với phần mềm Web Dashboard tạo thành một quy chuẩn hoàn thiện, thể hiện nỗ lực tối đa của sinh viên trong quá trình học tập.
 
 \end{document}
 """
 
 with open("report/A06_Report.tex", "w", encoding="utf-8") as f:
     f.write(latex_content)
+
