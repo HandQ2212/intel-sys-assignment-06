@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.16)  1 OCT 2026 22:16
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.16)  1 OCT 2026 23:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1115,10 +1115,6 @@ Package hyperref Info: Link coloring OFF on input line 93.
 \openout5 = `rnn_slides.out'.
 
 
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
-
-
 (/usr/local/texlive/2026/texmf-dist/tex/latex/translator/translator-basic-dicti
 onary-English.dict
 Dictionary: translator-basic-dictionary, Language: English 
@@ -1310,80 +1306,76 @@ Overfull \vbox (1.51132pt too high) detected at line 950
 
 ] [27
 
-] [28
-
-] [29
-
 ]
 \openout4 = `rnn_slides.vrb'.
 
-
-(./rnn_slides.vrb) [30
+ (./rnn_slides.vrb)
+[28
 
 ]
 \openout4 = `rnn_slides.vrb'.
 
  (./rnn_slides.vrb)
-Overfull \vbox (0.35178pt too high) detected at line 1395
+Overfull \vbox (0.35178pt too high) detected at line 1362
+ []
+
+[29
+
+] [30
+
+]
+Underfull \hbox (badness 6691) in paragraph at lines 1460--1460
+[]|\TU/TimesNewRoman(0)/b/n/10 RNN THUẦN \TU/TimesNewRoman(0)/m/n/10 (1986-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1460--1460
+[]|\TU/TimesNewRoman(0)/b/n/10 TRANSFORMER
+ []
+
+
+Underfull \hbox (badness 2285) in paragraph at lines 1460--1460
+[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Ngữ cảnh hai chiều
+ []
+
+
+Underfull \hbox (badness 2772) in paragraph at lines 1460--1460
+[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Gấp đôi nhánh tính
+ []
+
+
+Underfull \hbox (badness 2103) in paragraph at lines 1460--1460
+[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Dự báo offline theo
+ []
+
+
+Underfull \hbox (badness 5622) in paragraph at lines 1460--1460
+[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Thống trị lĩnh vực
+ []
+
+
+Overfull \vbox (12.31621pt too high) detected at line 1460
  []
 
 [31
 
 ] [32
 
-]
-Underfull \hbox (badness 6691) in paragraph at lines 1493--1493
-[]|\TU/TimesNewRoman(0)/b/n/10 RNN THUẦN \TU/TimesNewRoman(0)/m/n/10 (1986-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1493--1493
-[]|\TU/TimesNewRoman(0)/b/n/10 TRANSFORMER
- []
-
-
-Underfull \hbox (badness 2285) in paragraph at lines 1493--1493
-[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Ngữ cảnh hai chiều
- []
-
-
-Underfull \hbox (badness 2772) in paragraph at lines 1493--1493
-[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Gấp đôi nhánh tính
- []
-
-
-Underfull \hbox (badness 2103) in paragraph at lines 1493--1493
-[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Dự báo offline theo
- []
-
-
-Underfull \hbox (badness 5622) in paragraph at lines 1493--1493
-[]|$\OMS/cmsy/m/n/10 ^^O$ \TU/TimesNewRoman(0)/m/n/10 Thống trị lĩnh vực
- []
-
-
-Overfull \vbox (12.31621pt too high) detected at line 1493
- []
-
-[33
+] [33
 
 ] [34
 
 ] [35
 
-] [36
+]
+\openout4 = `rnn_slides.vrb'.
 
-] [37
+ (./rnn_slides.vrb) [36
 
 ]
 \openout4 = `rnn_slides.vrb'.
 
- (./rnn_slides.vrb) [38
-
-]
-\openout4 = `rnn_slides.vrb'.
-
- (./rnn_slides.vrb) [39
+ (./rnn_slides.vrb) [37
 
 ]
 \openout4 = `rnn_slides.vrb'.
@@ -1392,16 +1384,16 @@ Overfull \vbox (12.31621pt too high) detected at line 1493
 (./rnn_slides.vrb
 File: images/rnn_training_loss.png Graphic file (type bmp)
 <images/rnn_training_loss.png>
-) [40
+) [38
 
 ]
 File: images/rnn_actual_vs_pred.png Graphic file (type bmp)
 <images/rnn_actual_vs_pred.png>
 File: images/rnn_residual_scatter.png Graphic file (type bmp)
 <images/rnn_residual_scatter.png>
- [41
+ [39
 
-] [42
+] [40
 
 ]
 \tf@nav=\write6
@@ -1422,12 +1414,12 @@ Package rerunfilecheck Info: File `rnn_slides.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 33612 strings out of 468168
- 743746 string characters out of 5432815
- 1452239 words of memory out of 5000000
- 61648 multiletter control sequences out of 15000+600000
+ 33596 strings out of 468168
+ 743190 string characters out of 5432815
+ 1452227 words of memory out of 5000000
+ 61632 multiletter control sequences out of 15000+600000
  637843 words of font info for 120 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  128i,27n,123p,423b,1771s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on rnn_slides.pdf (42 pages).
+Output written on rnn_slides.pdf (40 pages).

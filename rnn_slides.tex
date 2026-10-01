@@ -68,7 +68,7 @@
     \usebeamerfont{title in head/foot}Mạng Nơ-ron Hồi quy (RNN)
   \end{beamercolorbox}%
   \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.5ex,dp=1.1ex,right]{date in head/foot}%
-    \usebeamerfont{date in head/foot}\insertframenumber{} / 42\hspace*{2.5ex}
+    \usebeamerfont{date in head/foot}\insertframenumber{} / 38\hspace*{2.5ex}
   \end{beamercolorbox}}%
   \vskip0pt%
 }
@@ -974,11 +974,11 @@ Một ô RNN hồi quy khi mở cuộn trở thành một \textbf{mạng truyề
     \node[xnode] (xT) at (10, \yX) {\(x_T\)};
     
     % Hidden H
-    \node[hnode] (h1) at (0, \yH) {\(s_1\)};
-    \node[hnode] (h2) at (2.5, \yH) {\(s_2\)};
-    \node[hnode] (h3) at (5, \yH) {\(s_3\)};
+    \node[hnode] (h1) at (0, \yH) {\(h_1\)};
+    \node[hnode] (h2) at (2.5, \yH) {\(h_2\)};
+    \node[hnode] (h3) at (5, \yH) {\(h_3\)};
     \node (hdots) at (7.5, \yH) {\dots};
-    \node[hnode] (hT) at (10, \yH) {\(s_T\)};
+    \node[hnode] (hT) at (10, \yH) {\(h_T\)};
     
     % Predictions Y^
     \node[ynode] (yhat1) at (0, \yYhat) {\(\hat{y}_1\)};
@@ -999,20 +999,20 @@ Một ô RNN hồi quy khi mở cuộn trở thành một \textbf{mạng truyề
     \node[lnode] (LT) at (10, \yL) {\(L_T\)};
     
     % Arrows X -> H
-    \draw[flowarrow] (x1) -- (h1);
-    \draw[flowarrow] (x2) -- (h2);
-    \draw[flowarrow] (x3) -- (h3);
-    \draw[flowarrow] (xT) -- (hT);
+    \draw[flowarrow] (x1) -- (h1) node[midway, left] {\scriptsize \(W\)};
+    \draw[flowarrow] (x2) -- (h2) node[midway, left] {\scriptsize \(W\)};
+    \draw[flowarrow] (x3) -- (h3) node[midway, left] {\scriptsize \(W\)};
+    \draw[flowarrow] (xT) -- (hT) node[midway, left] {\scriptsize \(W\)};
     
     % Arrows H -> Y^
-    \draw[flowarrow] (h1) -- (yhat1);
-    \draw[flowarrow] (h2) -- (yhat2);
-    \draw[flowarrow] (h3) -- (yhat3);
-    \draw[flowarrow] (hT) -- (yhatT);
+    \draw[flowarrow] (h1) -- (yhat1) node[midway, left] {\scriptsize \(V\)};
+    \draw[flowarrow] (h2) -- (yhat2) node[midway, left] {\scriptsize \(V\)};
+    \draw[flowarrow] (h3) -- (yhat3) node[midway, left] {\scriptsize \(V\)};
+    \draw[flowarrow] (hT) -- (yhatT) node[midway, left] {\scriptsize \(V\)};
     
     % Arrows H -> H
-    \draw[flowarrow] (h1) -- (h2) node[midway, above] {\scriptsize \(W\)};
-    \draw[flowarrow] (h2) -- (h3) node[midway, above] {\scriptsize \(W\)};
+    \draw[flowarrow] (h1) -- (h2) node[midway, above] {\scriptsize \(U\)};
+    \draw[flowarrow] (h2) -- (h3) node[midway, above] {\scriptsize \(U\)};
     \draw[flowarrow] (h3) -- (hdots);
     \draw[flowarrow] (hdots) -- (hT);
     
@@ -1040,6 +1040,54 @@ Một ô RNN hồi quy khi mở cuộn trở thành một \textbf{mạng truyề
 \end{frame}
 
 % ---------------- SLIDE 19 ----------------
+\begin{frame}{Bản chất Hàm mất mát (Loss Function) trong RNN}
+\small
+\begin{block}{\textbf{Khái niệm}}
+Hàm mất mát $L$ (Loss Function) là thước đo độ sai lệch giữa \textbf{dự đoán của mô hình} ($\hat{y}$) và \textbf{kết quả thực tế} ($y$). Mục tiêu của quá trình huấn luyện RNN là tìm ra tập trọng số $U, W, V$ sao cho $L$ đạt mức nhỏ nhất.
+\end{block}
+
+\vspace{0.1cm}
+\begin{alertblock}{\textbf{Đặc trưng Mất mát trong Dữ liệu Chuỗi (Sequential Loss)}}
+Không giống như mạng Feedforward (chỉ đưa ra 1 đầu ra ở lớp cuối), mô hình RNN có thể đưa ra dự đoán $\hat{y}_t$ tại \textbf{nhiều bước thời gian} $t$. 
+\begin{itemize}
+    \item Hàm mất mát toàn cục $L$ được định nghĩa là \textbf{tổng (hoặc trung bình cộng)} của tất cả các hàm mất mát cục bộ $L_t$ tại từng bước thời gian: $L = \sum_{t=1}^{T} L_t$ (hoặc $L = \frac{1}{T} \sum_{t=1}^{T} L_t$).
+    \item \textit{Nhắc lại sơ đồ trước:} Tín hiệu sai số $L_t$ từ mọi thời điểm sẽ được thu thập và cộng dồn lại thành $L$ tổng, sau đó mới tiến hành tính đạo hàm lan truyền ngược (BPTT).
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+% ---------------- SLIDE 20 ----------------
+\begin{frame}{Cách chọn Công thức tính Mất mát cục bộ ($L_t$)}
+Việc chọn công thức tính $L_t$ hoàn toàn phụ thuộc vào \textbf{bản chất của đầu ra} bài toán:
+
+\vspace{0.2cm}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\begin{exampleblock}{\textbf{1. Bài toán Hồi quy (Regression)}}
+\textit{Dự đoán một giá trị số thực liên tục (VD: Dự báo giá vàng ngày mai, dự báo nhiệt độ).}
+\begin{itemize}
+    \item \textbf{Mean Squared Error (MSE):} Phạt nặng các sai số lớn. Là Loss phổ biến nhất.
+    \[ L_t = (y_t - \hat{y}_t)^2 \]
+    \item \textbf{Mean Absolute Error (MAE):} Bền vững (robust) hơn với các nhiễu ngoại lai.
+    \[ L_t = |y_t - \hat{y}_t| \]
+\end{itemize}
+\end{exampleblock}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\begin{alertblock}{\textbf{2. Bài toán Phân loại (Classification)}}
+\textit{Dự đoán xác suất thuộc về các nhóm (VD: Phân loại cảm xúc văn bản, Dịch máy).}
+\begin{itemize}
+    \item \textbf{Cross-Entropy Loss (Entropy Chéo):} Đo lường khoảng cách giữa 2 phân phối xác suất.
+    \[ L_t = -\sum_{c=1}^{C} y_{t,c} \log(\hat{y}_{t,c}) \]
+    \scriptsize Trong đó $y_{t,c}$ là nhãn thật (One-hot vector) và $\hat{y}_{t,c}$ là xác suất dự đoán (qua Softmax).
+\end{itemize}
+\end{alertblock}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ---------------- SLIDE 19 ----------------
 \begin{frame}{Backpropagation Through Time (BPTT)}
 \small
 Có 3 tham số ta cần phải tìm là $W, U, V$. Để thực hiện gradient descent, ta cần tính: $\frac{\partial L}{\partial U}$, $\frac{\partial L}{\partial V}$, $\frac{\partial L}{\partial W}$.
@@ -1048,35 +1096,35 @@ Tính đạo hàm với $V$ thì khá đơn giản vì nó chỉ phụ thuộc t
 \[ \frac{\partial L}{\partial V} = \sum_{t=1}^{T} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial V} \]
 
 Tuy nhiên với $U, W$ thì lại khác. Xét tổng quát tại thời điểm $T$:
-\[ \frac{\partial L}{\partial W} = \sum_{t=1}^{T} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial s_t} \cdot \frac{\partial s_t}{\partial W} \]
+\[ \frac{\partial L}{\partial U} = \sum_{t=1}^{T} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial h_t} \cdot \frac{\partial h_t}{\partial U} \]
 
-Do trạng thái $s_t = \tanh(W \cdot s_{t-1} + U \cdot x_t)$ có $s_{t-1}$ phụ thuộc vào $W$, ta phải áp dụng Chain Rule truy hồi liên tục về tận thời điểm đầu tiên.
+Do trạng thái $h_t = \tanh(U \cdot h_{t-1} + W \cdot x_t)$ có $h_{t-1}$ phụ thuộc vào $U$, ta phải áp dụng Chain Rule truy hồi liên tục về tận thời điểm đầu tiên.
 \end{frame}
 
 % ---------------- SLIDE 20 ----------------
-\begin{frame}{BPTT: Đạo hàm cho W}
+\begin{frame}{BPTT: Đạo hàm cho U}
 \small
 Sử dụng công thức đạo hàm hàm hợp $(f(x) \cdot g(x))' = f'(x)g(x) + f(x)g'(x)$, ta có:
 
-\[ \frac{\partial s_T}{\partial W} = \frac{\partial s'_T}{\partial W} + \frac{\partial s_T}{\partial s_{T-1}} \cdot \frac{\partial s_{T-1}}{\partial W} \]
-trong đó $\frac{\partial s'_T}{\partial W}$ là đạo hàm của $s_T$ với $W$ khi coi $s_{T-1}$ là hằng số đối với $W$.
+\[ \frac{\partial h_T}{\partial U} = \frac{\partial h'_T}{\partial U} + \frac{\partial h_T}{\partial h_{T-1}} \cdot \frac{\partial h_{T-1}}{\partial U} \]
+trong đó $\frac{\partial h'_T}{\partial U}$ là đạo hàm của $h_T$ với $U$ khi coi $h_{T-1}$ là hằng số đối với $U$.
 
-Tương tự, trong biểu thức $s_{T-1}$ có $s_{T-2}$ phụ thuộc vào $W$ \dots nên áp dụng công thức trên và chuỗi Chain Rule, ta được:
-\[ \frac{\partial L}{\partial W} = \sum_{t=1}^{T} \sum_{i=0}^{t} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial s_t} \cdot \frac{\partial s_t}{\partial s_i} \cdot \frac{\partial s'_i}{\partial W} \]
+Tương tự, trong biểu thức $h_{T-1}$ có $h_{T-2}$ phụ thuộc vào $U$ \dots nên áp dụng công thức trên và chuỗi Chain Rule, ta được:
+\[ \frac{\partial L}{\partial U} = \sum_{t=1}^{T} \sum_{i=0}^{t} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial h_t} \cdot \frac{\partial h_t}{\partial h_i} \cdot \frac{\partial h'_i}{\partial U} \]
 
-trong đó $\frac{\partial s_t}{\partial s_i} = \prod_{j=i}^{t-1} \frac{\partial s_{j+1}}{\partial s_j}$ và $\frac{\partial s'_i}{\partial W}$ là đạo hàm của $s_i$ với $W$ khi coi $s_{i-1}$ là hằng số.
+trong đó $\frac{\partial h_t}{\partial h_i} = \prod_{j=i}^{t-1} \frac{\partial h_{j+1}}{\partial h_j}$ và $\frac{\partial h'_i}{\partial U}$ là đạo hàm của $h_i$ với $U$ khi coi $h_{i-1}$ là hằng số.
 \end{frame}
 
 % ---------------- SLIDE 21 ----------------
-\begin{frame}{BPTT: Đạo hàm cho U}
+\begin{frame}{BPTT: Đạo hàm cho W}
 \small
-Hoàn toàn tương tự với ma trận trọng số $U$ (từ input vào hidden layer):
-\[ \frac{\partial L}{\partial U} = \sum_{t=1}^{T} \sum_{i=0}^{t} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial s_t} \cdot \frac{\partial s_t}{\partial s_i} \cdot \frac{\partial s'_i}{\partial U} \]
+Hoàn toàn tương tự với ma trận trọng số $W$ (từ input vào hidden layer):
+\[ \frac{\partial L}{\partial W} = \sum_{t=1}^{T} \sum_{i=0}^{t} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial h_t} \cdot \frac{\partial h_t}{\partial h_i} \cdot \frac{\partial h'_i}{\partial W} \]
 
 \vspace{0.4cm}
 \begin{alertblock}{\textbf{Cốt lõi vấn đề của BPTT}}
-Nhìn vào công thức tính đạo hàm của $L$ với $W$ và $U$ ở trên, ta thấy xuất hiện nhân tử:
-\[ \frac{\partial s_t}{\partial s_i} = \prod_{j=i}^{t-1} \frac{\partial s_{j+1}}{\partial s_j} \]
+Nhìn vào công thức tính đạo hàm của $L$ với $U$ và $W$ ở trên, ta thấy xuất hiện nhân tử:
+\[ \frac{\partial h_t}{\partial h_i} = \prod_{j=i}^{t-1} \frac{\partial h_{j+1}}{\partial h_j} \]
 Đây chính là nguồn cơn của hiện tượng \textbf{Vanishing Gradient} (Triệt tiêu đạo hàm) hoặc \textbf{Exploding Gradient} (Nổ đạo hàm) khi chuỗi $T$ lớn.
 \end{alertblock}
 \end{frame}
@@ -1084,19 +1132,19 @@ Nhìn vào công thức tính đạo hàm của $L$ với $W$ và $U$ ở trên,
 % ---------------- SLIDE 22 ----------------
 \begin{frame}{Chứng minh Toán học: Phân rã Gradient trong RNN}
 \footnotesize
-Xét thành phần cốt lõi trong BPTT là đạo hàm trạng thái qua nhiều bước thời gian: $\frac{\partial s_T}{\partial s_k} = \prod_{j=k}^{T-1} \frac{\partial s_{j+1}}{\partial s_j}$.\\[0.1cm]
-Do $s_{j+1} = \tanh(W \cdot s_j + U \cdot x_{j+1})$, ma trận Jacobian tại mỗi bước là: $\frac{\partial s_{j+1}}{\partial s_j} = \text{diag}(1 - s_{j+1}^2) \cdot W$.
+Xét thành phần cốt lõi trong BPTT là đạo hàm trạng thái qua nhiều bước thời gian: $\frac{\partial h_T}{\partial h_k} = \prod_{j=k}^{T-1} \frac{\partial h_{j+1}}{\partial h_j}$.\\[0.1cm]
+Do $h_{j+1} = \tanh(U \cdot h_j + W \cdot x_{j+1})$, ma trận Jacobian tại mỗi bước là: $\frac{\partial h_{j+1}}{\partial h_j} = \text{diag}(1 - h_{j+1}^2) \cdot U$.
 
 \vspace{0.05cm}
 \begin{block}{\textbf{Đánh giá Chuẩn Ma trận (Matrix Norm)}}
 Áp dụng tính chất $\Vert A \cdot B \Vert \le \Vert A \Vert \cdot \Vert B \Vert$, ta lấy chuẩn 2 vế:
-\[ \left\Vert \frac{\partial s_{j+1}}{\partial s_j} \right\Vert \le \Vert \text{diag}(1 - s_{j+1}^2) \Vert \cdot \Vert W \Vert \le 1 \cdot \Vert W \Vert = \Vert W \Vert \]
-(Vì đạo hàm của $\tanh$ lớn nhất bằng 1 nên $\Vert \text{diag}(1 - s_{j+1}^2) \Vert \le 1$).
+\[ \left\Vert \frac{\partial h_{j+1}}{\partial h_j} \right\Vert \le \Vert \text{diag}(1 - h_{j+1}^2) \Vert \cdot \Vert U \Vert \le 1 \cdot \Vert U \Vert = \Vert U \Vert \]
+(Vì đạo hàm của $\tanh$ lớn nhất bằng 1 nên $\Vert \text{diag}(1 - h_{j+1}^2) \Vert \le 1$).
 \end{block}
 
 \vspace{0.05cm}
 \begin{alertblock}{\textbf{Cơ chế Vanishing Gradient}}
-Nếu trị riêng lớn nhất của $W$ nhỏ hơn 1 (tức $\Vert W \Vert = \gamma < 1$): $\left\Vert \frac{\partial s_T}{\partial s_k} \right\Vert \le \gamma^{T-k} \xrightarrow{T-k \to \infty} 0$.\\[0.1cm]
+Nếu trị riêng lớn nhất của $U$ nhỏ hơn 1 (tức $\Vert U \Vert = \gamma < 1$): $\left\Vert \frac{\partial h_T}{\partial h_k} \right\Vert \le \gamma^{T-k} \xrightarrow{T-k \to \infty} 0$.\\[0.1cm]
 $\Rightarrow$ Tín hiệu gradient suy giảm theo hàm mũ về 0. Trọng số mất hoàn toàn khả năng cập nhật theo các lỗi từ quá khứ xa.
 \end{alertblock}
 \end{frame}
@@ -1105,13 +1153,13 @@ $\Rightarrow$ Tín hiệu gradient suy giảm theo hàm mũ về 0. Trọng số
 \begin{frame}{Hiện tượng Nổ Gradient (Exploding Gradient)}
 \small
 \begin{alertblock}{\textbf{Cơ chế Toán học (Exploding Gradient)}}
-Ngược lại với triệt tiêu, nếu trị riêng lớn nhất của $W$ lớn hơn 1 ($\Vert W \Vert = \gamma > 1$) và phần lớn nơ-ron hoạt động ở vùng tuyến tính của $\tanh$ (nơi đạo hàm xấp xỉ 1):
-\[ \left\Vert \frac{\partial s_T}{\partial s_k} \right\Vert \approx \gamma^{T-k} \xrightarrow{T-k \to \infty} \infty \]
+Ngược lại với triệt tiêu, nếu trị riêng lớn nhất của $U$ lớn hơn 1 ($\Vert U \Vert = \gamma > 1$) và phần lớn nơ-ron hoạt động ở vùng tuyến tính của $\tanh$ (nơi đạo hàm xấp xỉ 1):
+\[ \left\Vert \frac{\partial h_T}{\partial h_k} \right\Vert \approx \gamma^{T-k} \xrightarrow{T-k \to \infty} \infty \]
 \end{alertblock}
 
 \vspace{0.1cm}
 \begin{block}{\textbf{Hậu quả Hình học ("Vách đá" Hàm Loss)}}
-Sự nhân dồn liên tục của $W$ qua $T$ bước thời gian tạo ra những "vách đá" (cliffs) cực dốc trong không gian tham số. 
+Sự nhân dồn liên tục của $U$ qua $T$ bước thời gian tạo ra những "vách đá" (cliffs) cực dốc trong không gian tham số. 
 \begin{itemize}
     \item Khi mô hình tiến gần vách đá, đạo hàm bùng nổ theo hàm mũ.
     \item Gradient khổng lồ gây ra bước cập nhật (Overshooting) đẩy văng mô hình khỏi vùng hội tụ, sinh ra lỗi \texttt{NaN} hoặc \texttt{Inf}.
@@ -1148,87 +1196,6 @@ g & \text{nếu } \Vert g \Vert \le \theta \\
 
 
 % ---------------- SLIDE 25 ----------------
-\begin{frame}{Tổng kết Điểm nghẽn của Simple RNN}
-\begin{alertblock}{\textbf{1. Không có Cơ chế Chọn lọc (Unselective Memory)}}
-Mọi bước thời gian đều bị nén qua một hàm $\tanh$ duy nhất, thông tin quan trọng dễ bị thông tin rác làm loãng.
-\end{alertblock}
-
-\begin{alertblock}{\textbf{2. Mất Trí nhớ Dài hạn (Short-term Memory Horizon)}}
-Do triệt tiêu gradient, RNN thực tế chỉ nhớ được từ 5 đến 10 bước thời gian gần nhất.
-\end{alertblock}
-
-\begin{alertblock}{\textbf{3. Bắt buộc Tính toán Tuần tự (Sequential Bottleneck)}}
-$s_t$ chỉ tính được khi đã có $s_{t-1} \rightarrow$ KHÔNG THỂ SONG SONG HÓA trên GPU như Transformer hay CNN.
-\end{alertblock}
-\end{frame}
-
-% ---------------- SLIDE 26 ----------------
-\begin{frame}{Thiết lập Thực nghiệm Chuỗi Tài chính}
-\textit{Kiểm chứng hiệu năng của RNN trên 2 tập dữ liệu thực tế lớn từ Kaggle:}
-\vspace{0.4cm}
-
-\begin{itemize}
-\item \textbf{Tập 1:} Chuỗi giá vàng \& bạc hàng ngày (Gold \& Silver daily prices, 1968–2021).
-\item \textbf{Tập 2:} Chuỗi biến động giá \& khối lượng cổ phiếu Amazon (AMZN, 1997–2023).
-\end{itemize}
-\vspace{0.4cm}
-\begin{block}{\textbf{Cấu hình Thực nghiệm}}
-\begin{itemize}
-\item \textbf{Cửa sổ trượt:} 30 ngày lịch sử ($L=30$) để dự đoán bước tiếp theo ($t+1$).
-\item \textbf{Baseline đối chứng:} Phương pháp Naive / Persistence ($\hat{y}_{t+1} = y_t$ — Lấy giá hôm nay đoán cho ngày mai).
-\end{itemize}
-\end{block}
-\end{frame}
-
-% ---------------- SLIDE 27 ----------------
-\begin{frame}{Kết quả Thực nghiệm \& Hiện tượng Nghịch lý}
-Bảng so sánh độ lệch sai số căn quân phương (RMSE trên tập Test):
-
-\vspace{0.4cm}
-\begin{table}
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{l c c c p{4.5cm}}
-\toprule
-\textbf{Tập dữ liệu} & \textbf{Naive Baseline} & \textbf{PyTorch RNN} & \textbf{Keras RNN} & \textbf{Đánh giá} \\
-\midrule
-Giá Vàng (Gold) & 15.48 & \textbf{15.45} & 16.42 & \textcolor{red}{\textit{Keras RNN chạy tệ hơn cả Naive}} \\
-Cổ phiếu AMZN & 3.14 & \textbf{3.13} & 3.18 & \textcolor{gray}{\textit{Xấp xỉ phương pháp Naive}} \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
-\vspace{0.4cm}
-\begin{alertblock}{\textbf{Nghịch lý Quan sát}}
-Một mạng nơ-ron học sâu phức tạp huấn luyện hàng chục epoch kết quả lại chỉ tương đương, thậm chí kém hơn cả một thuật toán "lười biếng" lấy giá hôm trước làm dự đoán!
-\end{alertblock}
-\end{frame}
-
-% ---------------- SLIDE 28 ----------------
-\begin{frame}{Bản chất Thất bại: Dịch chuyển Phân phối (Distribution Shift)}
-Tại sao Simple RNN lại thất bại ở bài toán dự báo giá kim loại?
-
-\vspace{0.4cm}
-\begin{alertblock}{\textbf{Phân phối Dữ liệu Train vs Test}}
-\begin{itemize}
-\item \textbf{Tập Train:} Giá cao nhất = $850.00$ USD (ĐÃ ĐƯỢC HỌC - Nội suy tốt)
-\item \textbf{Tập Test:} Giá thấp nhất = $1,049.40$ USD (CHƯA GẶP BAO GIỜ - Ngoại suy bất lực)
-\item $\rightarrow$ 100% dữ liệu Test > Train Max!
-\end{itemize}
-\end{alertblock}
-
-\vspace{0.2cm}
-\begin{exampleblock}{\textbf{Bài học \& Giải pháp khắc phục}}
-\begin{itemize}
-\item Mạng nơ-ron không thể ngoại suy trên vùng số liệu mới.
-\item \textbf{Giải pháp:} Không dự đoán mức giá tuyệt đối, phải chuyển thành tỷ suất sinh lời dừng (\textbf{Log-return}): $r_t = \ln(P_t / P_{t-1})$.
-\end{itemize}
-\end{exampleblock}
-\end{frame}
-
-
-% ---------------- SLIDE 29 ----------------
 \begin{frame}{Từ RNN đến BiRNN: Mở rộng theo hai hướng}
 \small
 \begin{columns}[T]
@@ -1287,7 +1254,7 @@ Mỗi vị trí nhận ngữ cảnh từ cả đầu và cuối của \textbf{c�
 \end{columns}
 \end{frame}
 
-% ---------------- SLIDE 30 ----------------
+% ---------------- SLIDE 26 ----------------
 \begin{frame}[fragile]{BiRNN với giá vàng: Windowing và dự đoán ngày kế tiếp}
 \small
 \begin{block}{1. Windowing: tạo các cặp đầu vào--nhãn}
@@ -1351,7 +1318,7 @@ Mỗi vị trí nhận ngữ cảnh từ cả đầu và cuối của \textbf{c�
 
 \end{frame}
 
-% ---------------- SLIDE 31 ----------------
+% ---------------- SLIDE 27 ----------------
 \begin{frame}[fragile]{BiRNN hồi quy: từ tensor đến giá dự đoán}
 \small
 \begin{columns}[T]
@@ -1394,7 +1361,7 @@ BiRNN chỉ đọc cửa sổ \([P_{t-29},\ldots,P_t]\); giá mục tiêu \(P_{t
 \end{block}
 \end{frame}
 
-% ---------------- SLIDE 32 ----------------
+% ---------------- SLIDE 28 ----------------
 \begin{frame}{BiRNN trong gán nhãn chuỗi: khai thác ngữ cảnh hai phía}
 \small
 
@@ -1465,7 +1432,7 @@ Mỗi vị trí (t) nhận một vector chứa thông tin từ \textbf{hai phía
 \end{alertblock}
 \end{frame}
 
-% ---------------- SLIDE 33 ----------------
+% ---------------- SLIDE 29 ----------------
 \begin{frame}{Tổng kết \& Bức tranh Toàn cảnh}
 \begin{center}
 \textbf{TIẾN TRÌNH CÔNG NGHỆ MÔ HÌNH HÓA DỮ LIỆU CHUỖI}
@@ -1494,7 +1461,7 @@ Simple RNN đã đặt nền móng lý thuyết mang tính lịch sử về vi�
 
 
 
-% ---------------- SLIDE 34 ----------------
+% ---------------- SLIDE 30 ----------------
 \begin{frame}{Phần 2: Tiền xử lý dữ liệu chuỗi cho RNN}
 \begin{center}
 {\Large\bfseries Từ dữ liệu thô đến tensor đầu vào}\par
@@ -1524,7 +1491,7 @@ Giá vàng đã là dữ liệu số: không cần tokenizer hay vocabulary. Vă
 \end{alertblock}
 \end{frame}
 
-% ---------------- SLIDE 35 ----------------
+% ---------------- SLIDE 31 ----------------
 \begin{frame}{Hai loại dữ liệu chuỗi, hai pipeline}
 \small
 \begin{columns}[T]
@@ -1557,7 +1524,7 @@ Giá vàng đã là dữ liệu số: không cần tokenizer hay vocabulary. Vă
 \end{alertblock}
 \end{frame}
 
-% ---------------- SLIDE 36 ----------------
+% ---------------- SLIDE 32 ----------------
 \begin{frame}{Tokenizer, vocabulary, padding và embedding}
 \small
 \begin{center}
@@ -1582,7 +1549,7 @@ Ví dụ notebook: \texttt{token\_ids} có shape $(4,6)$; sau embedding 8 chiề
 \end{block}
 \end{frame}
 
-% ---------------- SLIDE 37 ----------------
+% ---------------- SLIDE 33 ----------------
 \begin{frame}{Pipeline tiền xử lý giá vàng}
 \small
 \begin{columns}[T]
@@ -1614,7 +1581,7 @@ $x_{\mathrm{scaled}}=\dfrac{x-\min_{\mathrm{train}}}{\max_{\mathrm{train}}-\min_
 \end{alertblock}
 \end{frame}
 
-% ---------------- SLIDE 38 ----------------
+% ---------------- SLIDE 34 ----------------
 \begin{frame}[fragile]{Code minh họa: tokenizer và embedding}
 \small
 \begin{columns}[T]
@@ -1650,7 +1617,7 @@ Mỗi token ID được thay bằng một vector 8 chiều. Trục thời gian 6
 \footnotesize\textit{Đây là mã rút gọn để minh họa; vocabulary phải được xây từ dữ liệu huấn luyện.}
 \end{frame}
 
-% ---------------- SLIDE 39 ----------------
+% ---------------- SLIDE 35 ----------------
 \begin{frame}[fragile]{Code minh họa: chuỗi giá vàng}
 \small
 \begin{columns}[T]
@@ -1690,7 +1657,7 @@ scaled_train = scaler.transform(values_train)
 \footnotesize\textit{Chuỗi số liên tục đi thẳng vào mô hình; không dùng tokenizer hay embedding.}
 \end{frame}
 
-% ---------------- SLIDE 40 ----------------
+% ---------------- SLIDE 36 ----------------
 \begin{frame}[fragile]{Simple RNN: mô hình và quá trình huấn luyện}
 \scriptsize
 \begin{columns}[T]
@@ -1723,7 +1690,7 @@ Train loss gần 0; validation loss giảm mạnh rồi ổn định ở mức t
 \end{columns}
 \end{frame}
 
-% ---------------- SLIDE 41 ----------------
+% ---------------- SLIDE 37 ----------------
 \begin{frame}{Dự báo và phần dư trên tập test}
 \centering
 \vspace{-0.12cm}
@@ -1731,7 +1698,7 @@ Train loss gần 0; validation loss giảm mạnh rồi ổn định ở mức t
 \includegraphics[width=0.80\textwidth,height=3.00cm,keepaspectratio]{images/rnn_residual_scatter.png}
 \end{frame}
 
-% ---------------- SLIDE 42 ----------------
+% ---------------- SLIDE 38 ----------------
 \begin{frame}{Đọc kết quả: RNN chưa vượt baseline}
 \small
 \begin{block}{\textbf{Metrics trên tập test (theo notebook)}}

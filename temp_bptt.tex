@@ -1,0 +1,116 @@
+    \draw[flowarrow_red] (L3) -- (LTotal.south);
+    \draw[flowarrow_red] (LT) to[bend right=15] (LTotal.south east);
+    
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+% ---------------- SLIDE 19 ----------------
+\begin{frame}{Backpropagation Through Time (BPTT)}
+\small
+Có 3 tham số ta cần phải tìm là $W, U, V$. Để thực hiện gradient descent, ta cần tính: $\frac{\partial L}{\partial U}$, $\frac{\partial L}{\partial V}$, $\frac{\partial L}{\partial W}$.
+
+Tính đạo hàm với $V$ thì khá đơn giản vì nó chỉ phụ thuộc trực tiếp vào bước hiện tại:
+\[ \frac{\partial L}{\partial V} = \sum_{t=1}^{T} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial V} \]
+
+Tuy nhiên với $U, W$ thì lại khác. Xét tổng quát tại thời điểm $T$:
+\[ \frac{\partial L}{\partial W} = \sum_{t=1}^{T} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial s_t} \cdot \frac{\partial s_t}{\partial W} \]
+
+Do trạng thái $s_t = \tanh(W \cdot s_{t-1} + U \cdot x_t)$ có $s_{t-1}$ phụ thuộc vào $W$, ta phải áp dụng Chain Rule truy hồi liên tục về tận thời điểm đầu tiên.
+\end{frame}
+
+% ---------------- SLIDE 20 ----------------
+\begin{frame}{BPTT: Đạo hàm cho W}
+\small
+Sử dụng công thức đạo hàm hàm hợp $(f(x) \cdot g(x))' = f'(x)g(x) + f(x)g'(x)$, ta có:
+
+\[ \frac{\partial s_T}{\partial W} = \frac{\partial s'_T}{\partial W} + \frac{\partial s_T}{\partial s_{T-1}} \cdot \frac{\partial s_{T-1}}{\partial W} \]
+trong đó $\frac{\partial s'_T}{\partial W}$ là đạo hàm của $s_T$ với $W$ khi coi $s_{T-1}$ là hằng số đối với $W$.
+
+Tương tự, trong biểu thức $s_{T-1}$ có $s_{T-2}$ phụ thuộc vào $W$ \dots nên áp dụng công thức trên và chuỗi Chain Rule, ta được:
+\[ \frac{\partial L}{\partial W} = \sum_{t=1}^{T} \sum_{i=0}^{t} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial s_t} \cdot \frac{\partial s_t}{\partial s_i} \cdot \frac{\partial s'_i}{\partial W} \]
+
+trong đó $\frac{\partial s_t}{\partial s_i} = \prod_{j=i}^{t-1} \frac{\partial s_{j+1}}{\partial s_j}$ và $\frac{\partial s'_i}{\partial W}$ là đạo hàm của $s_i$ với $W$ khi coi $s_{i-1}$ là hằng số.
+\end{frame}
+
+% ---------------- SLIDE 21 ----------------
+\begin{frame}{BPTT: Đạo hàm cho U}
+\small
+Hoàn toàn tương tự với ma trận trọng số $U$ (từ input vào hidden layer):
+\[ \frac{\partial L}{\partial U} = \sum_{t=1}^{T} \sum_{i=0}^{t} \frac{\partial L_t}{\partial \hat{y}_t} \cdot \frac{\partial \hat{y}_t}{\partial s_t} \cdot \frac{\partial s_t}{\partial s_i} \cdot \frac{\partial s'_i}{\partial U} \]
+
+\vspace{0.4cm}
+\begin{alertblock}{\textbf{Cốt lõi vấn đề của BPTT}}
+Nhìn vào công thức tính đạo hàm của $L$ với $W$ và $U$ ở trên, ta thấy xuất hiện nhân tử:
+\[ \frac{\partial s_t}{\partial s_i} = \prod_{j=i}^{t-1} \frac{\partial s_{j+1}}{\partial s_j} \]
+Đây chính là nguồn cơn của hiện tượng \textbf{Vanishing Gradient} (Triệt tiêu đạo hàm) hoặc \textbf{Exploding Gradient} (Nổ đạo hàm) khi chuỗi $T$ lớn.
+\end{alertblock}
+\end{frame}
+
+% ---------------- SLIDE 22 ----------------
+\begin{frame}{Chứng minh Toán học: Phân rã Gradient trong RNN}
+\footnotesize
+Xét thành phần cốt lõi trong BPTT là đạo hàm trạng thái qua nhiều bước thời gian: $\frac{\partial s_T}{\partial s_k} = \prod_{j=k}^{T-1} \frac{\partial s_{j+1}}{\partial s_j}$.\\[0.1cm]
+Do $s_{j+1} = \tanh(W \cdot s_j + U \cdot x_{j+1})$, ma trận Jacobian tại mỗi bước là: $\frac{\partial s_{j+1}}{\partial s_j} = \text{diag}(1 - s_{j+1}^2) \cdot W$.
+
+\vspace{0.05cm}
+\begin{block}{\textbf{Đánh giá Chuẩn Ma trận (Matrix Norm)}}
+Áp dụng tính chất $\Vert A \cdot B \Vert \le \Vert A \Vert \cdot \Vert B \Vert$, ta lấy chuẩn 2 vế:
+\[ \left\Vert \frac{\partial s_{j+1}}{\partial s_j} \right\Vert \le \Vert \text{diag}(1 - s_{j+1}^2) \Vert \cdot \Vert W \Vert \le 1 \cdot \Vert W \Vert = \Vert W \Vert \]
+(Vì đạo hàm của $\tanh$ lớn nhất bằng 1 nên $\Vert \text{diag}(1 - s_{j+1}^2) \Vert \le 1$).
+\end{block}
+
+\vspace{0.05cm}
+\begin{alertblock}{\textbf{Cơ chế Vanishing Gradient}}
+Nếu trị riêng lớn nhất của $W$ nhỏ hơn 1 (tức $\Vert W \Vert = \gamma < 1$): $\left\Vert \frac{\partial s_T}{\partial s_k} \right\Vert \le \gamma^{T-k} \xrightarrow{T-k \to \infty} 0$.\\[0.1cm]
+$\Rightarrow$ Tín hiệu gradient suy giảm theo hàm mũ về 0. Trọng số mất hoàn toàn khả năng cập nhật theo các lỗi từ quá khứ xa.
+\end{alertblock}
+\end{frame}
+
+% ---------------- SLIDE 23 ----------------
+\begin{frame}{Hiện tượng Nổ Gradient (Exploding Gradient)}
+\small
+\begin{alertblock}{\textbf{Cơ chế Toán học (Exploding Gradient)}}
+Ngược lại với triệt tiêu, nếu trị riêng lớn nhất của $W$ lớn hơn 1 ($\Vert W \Vert = \gamma > 1$) và phần lớn nơ-ron hoạt động ở vùng tuyến tính của $\tanh$ (nơi đạo hàm xấp xỉ 1):
+\[ \left\Vert \frac{\partial s_T}{\partial s_k} \right\Vert \approx \gamma^{T-k} \xrightarrow{T-k \to \infty} \infty \]
+\end{alertblock}
+
+\vspace{0.1cm}
+\begin{block}{\textbf{Hậu quả Hình học ("Vách đá" Hàm Loss)}}
+Sự nhân dồn liên tục của $W$ qua $T$ bước thời gian tạo ra những "vách đá" (cliffs) cực dốc trong không gian tham số. 
+\begin{itemize}
+    \item Khi mô hình tiến gần vách đá, đạo hàm bùng nổ theo hàm mũ.
+    \item Gradient khổng lồ gây ra bước cập nhật (Overshooting) đẩy văng mô hình khỏi vùng hội tụ, sinh ra lỗi \texttt{NaN} hoặc \texttt{Inf}.
+\end{itemize}
+\end{block}
+\end{frame}
+
+% ---------------- SLIDE 24 ----------------
+\begin{frame}{Giải pháp khắc phục: Gradient Norm Clipping}
+\footnotesize
+Để ngăn overshooting, ta hãm phanh bước nhảy. Đặt vector $g = \nabla L = \left[ \frac{\partial L}{\partial W}, \frac{\partial L}{\partial U}, \frac{\partial L}{\partial V} \right]$ là vector gradient chứa đạo hàm của tất cả các trọng số trong mô hình.
+
+\vspace{0.05cm}
+\begin{exampleblock}{\textbf{Cơ chế Cắt tỉa (Clipping)}}
+Nếu độ lớn (norm) của vector $g$ vượt ngưỡng $\theta$, ta co giãn toàn bộ vector:
+\[ g_{\text{clipped}} = \begin{cases} 
+g & \text{nếu } \Vert g \Vert \le \theta \\
+\theta \cdot \frac{g}{\Vert g \Vert} & \text{nếu } \Vert g \Vert > \theta 
+\end{cases} \]
+\end{exampleblock}
+
+\vspace{0.05cm}
+\begin{alertblock}{\textbf{Tại sao dùng Norm Clipping thay vì Value Clipping?}}
+\begin{itemize}
+    \item \textbf{Value Clipping (Cắt từng phần tử):} Ép lẻ từng $g_i \in [-\theta, \theta]$. Việc này \textbf{làm bóp méo hướng} của gradient, khiến mô hình cập nhật sai hướng.
+    \item \textbf{Norm Clipping (Co giãn vector):} Phép nhân vô hướng với tỷ lệ $\frac{\theta}{\Vert g \Vert}$ giúp vector mới tuy ngắn lại nhưng \textbf{bảo toàn tuyệt đối hướng đi nguyên thủy} trong không gian đa chiều.
+\end{itemize}
+\end{alertblock}
+
+\vspace{0.05cm}
+\textit{\textcolor{crimsonred}{*Lưu ý:}} Clipping chỉ chống Nổ đạo hàm, hoàn toàn vô dụng với Triệt tiêu đạo hàm.
+\end{frame}
+
+
+
+% ---------------- SLIDE 25 ----------------

@@ -1,0 +1,157 @@
+\end{tikzpicture}
+
+\vspace{0.3cm}
+\footnotesize \textit{Phân loại 1 ảnh — mốc đối chiếu, chưa khai thác ngữ cảnh chuỗi}
+\end{center}
+\end{column}
+% ----- (b) One-to-Many -----
+\begin{column}{0.33\textwidth}
+\begin{center}
+\textbf{One-to-Many}\\
+\footnotesize 1 bước vào \(\rightarrow\) chuỗi ra
+
+\vspace{0.3cm}
+\begin{tikzpicture}[thick]
+    \node (y1) {\(y_1\)};
+    \node (y2) [right=0.45cm of y1] {\(y_2\)};
+    \node (y3) [right=0.45cm of y2] {\(y_3\)};
+    \node (rnn) [draw, fill=blue!10, rounded corners, minimum size=0.6cm, below=0.5cm of y2] {\scriptsize RNN};
+    \node (x) [below=0.5cm of rnn] {\(x\) (1 vector)};
+
+    \draw[flowarrow] (x) -- (rnn);
+    \draw[flowarrow] (rnn) -- (y1);
+    \draw[flowarrow] (rnn) -- (y2);
+    \draw[flowarrow] (rnn) -- (y3);
+\end{tikzpicture}
+
+\vspace{0.3cm}
+\footnotesize \textit{Sinh chú thích ảnh (image captioning), sinh nhạc}
+\end{center}
+\end{column}
+% ----- (c) Many-to-One -----
+\begin{column}{0.33\textwidth}
+\begin{center}
+\textbf{Many-to-One}\\
+\footnotesize chuỗi vào \(\rightarrow\) 1 đầu ra
+
+\vspace{0.3cm}
+\begin{tikzpicture}[thick]
+    \node (y) {\(y\)};
+    \node (rnn) [draw, fill=blue!10, rounded corners, minimum size=0.6cm, below=0.5cm of y] {\scriptsize RNN};
+    \node (x2) [below=0.5cm of rnn] {\(x_2\)};
+    \node (x1) [left=0.45cm of x2] {\(x_1\)};
+    \node (x3) [right=0.45cm of x2] {\(x_3\)};
+
+    \draw[flowarrow] (x1) -- (rnn);
+    \draw[flowarrow] (x2) -- (rnn);
+    \draw[flowarrow] (x3) -- (rnn);
+    \draw[flowarrow] (rnn) -- (y);
+\end{tikzpicture}
+
+\vspace{0.3cm}
+\footnotesize \textit{Phân loại cảm xúc review; \textcolor{emeraldgreen}{dự báo giá ngày mai — dạng dùng trong phần thực nghiệm của bài}}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ---------------- SLIDE 17 ----------------
+\begin{frame}{Các Dạng Kiến trúc Tương tác Chuỗi (Phần 2)}
+\begin{columns}[T]
+% ----- (a) Many-to-Many đồng bộ -----
+\begin{column}{0.32\textwidth}
+\begin{center}
+\textbf{Many-to-Many (Đồng bộ)}\\
+\footnotesize mỗi bước vào \(\rightarrow\) 1 nhãn ra
+
+\vspace{0.25cm}
+\begin{tikzpicture}[thick]
+    \node (y1) {\(y_1\)};
+    \node (y2) [right=0.55cm of y1] {\(y_2\)};
+    \node (y3) [right=0.55cm of y2] {\(y_3\)};
+    \node (h1) [draw, fill=blue!10, rounded corners, minimum size=0.5cm, below=0.4cm of y1] {\scriptsize RNN};
+    \node (h2) [draw, fill=blue!10, rounded corners, minimum size=0.5cm, below=0.4cm of y2] {\scriptsize RNN};
+    \node (h3) [draw, fill=blue!10, rounded corners, minimum size=0.5cm, below=0.4cm of y3] {\scriptsize RNN};
+    \node (x1) [below=0.4cm of h1] {\(x_1\)};
+    \node (x2) [below=0.4cm of h2] {\(x_2\)};
+    \node (x3) [below=0.4cm of h3] {\(x_3\)};
+
+    \draw[flowarrow] (x1) -- (h1);
+    \draw[flowarrow] (x2) -- (h2);
+    \draw[flowarrow] (x3) -- (h3);
+    \draw[flowarrow] (h1) -- (y1);
+    \draw[flowarrow] (h2) -- (y2);
+    \draw[flowarrow] (h3) -- (y3);
+    \draw[flowarrow] (h1) -- (h2);
+    \draw[flowarrow] (h2) -- (h3);
+\end{tikzpicture}
+
+\vspace{0.25cm}
+\footnotesize \textit{Gán nhãn từ loại POS / NER: mỗi token ra đúng 1 nhãn}
+\end{center}
+\end{column}
+% ----- (b) Seq2Seq Encoder-Decoder -----
+\begin{column}{0.34\textwidth}
+\begin{center}
+\textbf{Seq2Seq (Encoder--Decoder)}\\
+\footnotesize độ dài ra \(\neq\) độ dài vào
+
+\vspace{0.25cm}
+\begin{tikzpicture}[thick]
+    \node (y1) {\(y_1\)};
+    \node (y2) [right=0.4cm of y1] {\(y_2\)};
+    \node (y3) [right=0.4cm of y2] {\(y_3\)};
+    \node (dec) [draw, fill=teal!15, rounded corners, minimum height=0.5cm, below=0.45cm of y2] {\scriptsize DECODER};
+    \node (enc) [draw, fill=blue!10, rounded corners, minimum height=0.5cm, below=0.55cm of dec] {\scriptsize ENCODER};
+    \node (x2) [below=0.45cm of enc] {\(x_2\)};
+    \node (x1) [left=0.4cm of x2] {\(x_1\)};
+
+    \draw[flowarrow] (x1) -- (enc);
+    \draw[flowarrow] (x2) -- (enc);
+    \draw[flowarrow] (enc) -- node[midway, right] {\scriptsize \(c\)} (dec);
+    \draw[flowarrow] (dec) -- (y1);
+    \draw[flowarrow] (dec) -- (y2);
+    \draw[flowarrow] (dec) -- (y3);
+\end{tikzpicture}
+
+\vspace{0.25cm}
+\footnotesize \textit{Encoder nén chuỗi vào thành vector ngữ cảnh \(c\); Decoder sinh chuỗi ra: dịch máy, tóm tắt}
+\end{center}
+\end{column}
+% ----- (c) Bidirectional RNN -----
+\begin{column}{0.32\textwidth}
+\begin{center}
+\textbf{Bidirectional RNN}\\
+\footnotesize nhìn cả 2 chiều thời gian
+
+\vspace{0.25cm}
+\begin{tikzpicture}[thick]
+    \node (out) at (1.1, 2.3) {\scriptsize \(h_t = [\overrightarrow{h_t} ; \overleftarrow{h_t}]\)};
+    \node (r1) [draw, fill=blue!10, rounded corners, minimum size=0.5cm] at (0, 1.1) {\scriptsize RNN};
+    \node (r2) [draw, fill=blue!10, rounded corners, minimum size=0.5cm] at (1.1, 1.1) {\scriptsize RNN};
+    \node (r3) [draw, fill=blue!10, rounded corners, minimum size=0.5cm] at (2.2, 1.1) {\scriptsize RNN};
+    \node (x1) at (0, 0) {\(x_1\)};
+    \node (x2) at (1.1, 0) {\(x_2\)};
+    \node (x3) at (2.2, 0) {\(x_3\)};
+
+    \draw[flowarrow] (x1) -- (r1);
+    \draw[flowarrow] (x2) -- (r2);
+    \draw[flowarrow] (x3) -- (r3);
+    \draw[flowarrow_teal, bend left=18] (r1) to (r2);
+    \draw[flowarrow_teal, bend left=18] (r2) to (r3);
+    \draw[flowarrow_red, bend right=18] (r3) to (r2);
+    \draw[flowarrow_red, bend right=18] (r2) to (r1);
+    \draw[flowarrow_green] (r2) -- (out);
+\end{tikzpicture}
+
+\vspace{0.25cm}
+\footnotesize \textit{NER, embedding; \textcolor{crimsonred}{không dùng dự báo tương lai — nhìn được tương lai = rò rỉ dữ liệu}}
+\end{center}
+\end{column}
+\end{columns}
+
+\vspace{0.2cm}
+\begin{exampleblock}{\textbf{Liên hệ bài toán asm6}}
+\centering Chuỗi giá quá khứ \(\rightarrow\) 1 giá ngày mai \(\Rightarrow\) bài toán thực nghiệm thuộc dạng \textbf{Many-to-One}.
+\end{exampleblock}
+\end{frame}
