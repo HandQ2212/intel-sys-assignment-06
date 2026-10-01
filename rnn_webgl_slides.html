@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>RNN Interactive WebGL Slides</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/dracula.min.css">
+    <style>
+        .webgl-container { width: 100%; height: 500px; margin: 0 auto; position: relative; border: 1px solid #444; border-radius: 8px;}
+        .slide-title { color: #f8f8f2 !important; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .instruction { font-size: 0.5em !important; color: #6272a4; }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <!-- Slide 1 -->
+            <section>
+                <h1 class="slide-title">Mạng Nơ-ron Hồi Quy (RNN)</h1>
+                <h3>Minh hoạ kiến trúc 3D với WebGL</h3>
+                <p class="instruction">Bấm phím mũi tên hoặc quẹt trái/phải để chuyển slide</p>
+            </section>
+            
+            <!-- Slide 2 -->
+            <section>
+                <h2 class="slide-title">Từ Không gian 2D sang 3D</h2>
+                <p>Để trực quan hoá đồ thị tính toán dạng "Mở cuộn" (Unfolded) của RNN, ta có thể biểu diễn các bước thời gian (Timesteps) trên không gian 3 chiều.</p>
+                <ul>
+                    <li style="color: #50fa7b">Khối Vuông Xanh Lá: Input (Đầu vào $x_t$)</li>
+                    <li style="color: #8be9fd">Khối Cầu Xanh Dương: Hidden State (Trạng thái ẩn $h_t$)</li>
+                    <li style="color: #ffb86c">Khối Vuông Cam: Output (Đầu ra $y_t$)</li>
+                    <li style="color: #ff79c6">Đường nối Hồng: Truyền trạng thái ẩn theo thời gian</li>
+                </ul>
+            </section>
+
+            <!-- Slide 3 (WebGL Demo) -->
+            <section>
+                <h2 class="slide-title">Kiến trúc RNN Mở Cuộn (Unfolded)</h2>
+                <p class="instruction">Dùng chuột nhấn và kéo để xoay khối 3D dưới đây</p>
+                <div id="webgl-demo" class="webgl-container"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Khởi tạo thư viện Slide HTML Reveal.js
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true
+        });
+
+        // ===== KHỞI TẠO THREE.JS (WEBGL) =====
+        const container = document.getElementById('webgl-demo');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1E1E2E); // Nền tối
+
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(0, 2, 22);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        // ===== ÁNH SÁNG =====
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        
+        const pointLight = new THREE.PointLight(0xffffff, 1);
+        pointLight.position.set(10, 15, 10);
+        scene.add(pointLight);
+
+        // ===== XÂY DỰNG MẠNG RNN =====
+        const timesteps = 5;
+        const nodes = [];
+        const spacing = 3.5;
+        
+        for(let i=0; i<timesteps; i++) {
+            const xPos = (i - Math.floor(timesteps/2)) * spacing;
+
+            // 1. Nút Đầu vào (Input - Xanh lá)
+            const xGeo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+            const xMat = new THREE.MeshPhongMaterial({color: 0x50fa7b});
+            const xMesh = new THREE.Mesh(xGeo, xMat);
+            xMesh.position.set(xPos, -3.5, 0);
+            scene.add(xMesh);
+            
+            // 2. Nút Ẩn (Hidden - Cầu xanh dương)
+            const hGeo = new THREE.SphereGeometry(1.2, 32, 32);
+            const hMat = new THREE.MeshPhongMaterial({color: 0x8be9fd, shininess: 100});
+            const hMesh = new THREE.Mesh(hGeo, hMat);
+            hMesh.position.set(xPos, 0, 0);
+            scene.add(hMesh);
+            nodes.push(hMesh);
+            
+            // 3. Nút Đầu ra (Output - Cam)
+            const yGeo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+            const yMat = new THREE.MeshPhongMaterial({color: 0xffb86c});
+            const yMesh = new THREE.Mesh(yGeo, yMat);
+            yMesh.position.set(xPos, 3.5, 0);
+            scene.add(yMesh);
+
+            // Vẽ đường nối Input -> Hidden (Ma trận W)
+            const matLine = new THREE.LineBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.5});
+            const geo1 = new THREE.BufferGeometry().setFromPoints([xMesh.position, hMesh.position]);
+            const line1 = new THREE.Line(geo1, matLine);
+            scene.add(line1);
+
+            // Vẽ đường nối Hidden -> Output (Ma trận V)
+            const geo2 = new THREE.BufferGeometry().setFromPoints([hMesh.position, yMesh.position]);
+            const line2 = new THREE.Line(geo2, matLine);
+            scene.add(line2);
+
+            // Vẽ đường nối Hidden(t-1) -> Hidden(t) (Ma trận U)
+            if (i > 0) {
+                const prevH = nodes[i-1];
+                const geo3 = new THREE.BufferGeometry().setFromPoints([prevH.position, hMesh.position]);
+                const line3 = new THREE.Line(geo3, new THREE.LineBasicMaterial({color: 0xff79c6, linewidth: 2}));
+                scene.add(line3);
+            }
+        }
+
+        // ===== TƯƠNG TÁC XOAY CHUỘT =====
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            previousMousePosition = { x: e.offsetX, y: e.offsetY };
+        });
+        window.addEventListener('mouseup', () => isDragging = false);
+        container.addEventListener('mousemove', (e) => {
+            if(isDragging) {
+                const deltaMove = {
+                    x: e.offsetX - previousMousePosition.x,
+                    y: e.offsetY - previousMousePosition.y
+                };
+                scene.rotation.y += deltaMove.x * 0.01;
+                scene.rotation.x += deltaMove.y * 0.01;
+            }
+            previousMousePosition = { x: e.offsetX, y: e.offsetY };
+        });
+
+        // ===== VÒNG LẶP ANIMATION =====
+        function animate() {
+            requestAnimationFrame(animate);
+            // Tự động xoay nhẹ nhàng liên tục
+            if(!isDragging) {
+                scene.rotation.y += 0.003;
+            }
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Xử lý khi thay đổi kích thước cửa sổ
+        window.addEventListener('resize', () => {
+            if (container.clientWidth > 0) {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -212,6 +212,47 @@ Báo cáo phân tích sâu sắc các rào cản kinh điển của chuỗi th�
 \newpage
 
 % ==============================================================================
+% TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT
+% ==============================================================================
+\phantomsection
+\addcontentsline{toc}{section}{TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT}
+\section*{TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT}
+\markboth{TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT}{TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT}
+
+\subsection*{1. Kho Lưu Trữ Mã Nguồn Chính Thức}
+\begin{mybox}{Thông Tin Kho Chứa Dự Án}
+    \begin{itemize}[leftmargin=*]
+        \item \textbf{Kho lưu trữ GitHub chính thức:} \href{https://github.com/HandQ2212/intel-sys-assignment-06}{\url{https://github.com/HandQ2212/intel-sys-assignment-06}}
+        \item \textbf{Tác giả thực hiện:} Nguyễn Nam Hải (Mã SV: B23DCCN277 -- Lớp D23CTPM01)
+        \item \textbf{Cấu trúc hệ thống:}
+        \begin{itemize}
+            \item \texttt{notebooks/}: Chứa 7 file Jupyter Notebook huấn luyện.
+            \item \texttt{backend/}: Chứa mã nguồn FastAPI nạp mô hình.
+            \item \texttt{backend/static/}: Chứa mã nguồn Dashboard UI vẽ biểu đồ.
+        \end{itemize}
+    \end{itemize}
+\end{mybox}
+
+\subsection*{2. Danh Mục Tập Dữ Liệu Thực Nghiệm}
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l L{3.2cm} X L{4.2cm}}
+\toprule
+\textbf{Bộ dữ liệu} & \textbf{Quy mô \& Kiểu} & \textbf{Đặc tả Đầu vào} & \textbf{Nguồn / Kaggle Link} \\
+\midrule
+\textbf{1. AMZN} & Chứng khoán (1997-2023) & Tensor 3D: $(B, 30, 1)$ & \href{https://www.kaggle.com/datasets/henryshan/amazon-com-inc-amzn}{\texttt{kaggle: henryshan/...}} \\
+\addlinespace
+\textbf{2. Gold} & Giá vàng vĩ mô (1968-2021) & Tensor 3D: $(B, 30, 1)$ & \href{https://www.kaggle.com/datasets/lbronchal/gold-and-silver-prices-dataset}{\texttt{kaggle: lbronchal/...}} \\
+\bottomrule
+\end{tabularx}
+\caption{Tổng hợp đặc tả và nguồn Kaggle của 2 bộ dữ liệu thực nghiệm}
+\label{tab:datasets_spec}
+\end{table}
+
+\newpage
+
+% ==============================================================================
 % CHƯƠNG 1
 % ==============================================================================
 \section{Cơ sở lý thuyết giải tích và toán học của RNN}

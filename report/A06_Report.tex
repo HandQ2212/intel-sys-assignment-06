@@ -152,8 +152,6 @@
 
     {\Large \textbf{BÁO CÁO KỸ THUẬT ASSIGNMENT 06}}\\[0.3cm]
     {\large \textbf{MÔN HỌC: LẬP TRÌNH HỆ THỐNG THÔNG MINH}}\\[0.5cm]
-    {\Large \textbf{\color{blue!85!black}MẠNG NƠ-RON HỒI QUY (RNN) TỪ CƠ SỞ LÝ THUYẾT ĐẾN ỨNG DỤNG DỰ BÁO CHUỖI THỜI GIAN}}\\[0.3cm]
-    {\normalsize \textit{Nghiên cứu Giải tích, Hiện thực Hóa Mã nguồn thuần (NumPy) và Đối chuẩn Thực nghiệm trên Keras và PyTorch (Gold Price, AMZN)}}
 
     \vspace{0.8cm}
 
@@ -210,213 +208,113 @@ Báo cáo phân tích sâu sắc các rào cản kinh điển của chuỗi th�
 \newpage
 
 % ==============================================================================
+% TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT
+% ==============================================================================
+\phantomsection
+\addcontentsline{toc}{section}{TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT}
+\section*{TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT}
+\markboth{TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT}{TÀI NGUYÊN THỰC NGHIỆM VÀ HƯỚNG DẪN CÀI ĐẶT}
+
+\subsection*{1. Kho Lưu Trữ Mã Nguồn Chính Thức}
+\begin{mybox}{Thông Tin Kho Chứa Dự Án}
+    \begin{itemize}[leftmargin=*]
+        \item \textbf{Kho lưu trữ GitHub chính thức:} \href{https://github.com/HandQ2212/intel-sys-assignment-06}{\url{https://github.com/HandQ2212/intel-sys-assignment-06}}
+        \item \textbf{Tác giả thực hiện:} Nguyễn Nam Hải (Mã SV: B23DCCN277 -- Lớp D23CTPM01)
+        \item \textbf{Cấu trúc hệ thống:}
+        \begin{itemize}
+            \item \texttt{notebooks/}: Chứa 7 file Jupyter Notebook huấn luyện.
+            \item \texttt{backend/}: Chứa mã nguồn FastAPI nạp mô hình.
+            \item \texttt{backend/static/}: Chứa mã nguồn Dashboard UI vẽ biểu đồ.
+        \end{itemize}
+    \end{itemize}
+\end{mybox}
+
+\subsection*{2. Danh Mục Tập Dữ Liệu Thực Nghiệm}
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l L{3.2cm} X L{4.2cm}}
+\toprule
+\textbf{Bộ dữ liệu} & \textbf{Quy mô \& Kiểu} & \textbf{Đặc tả Đầu vào} & \textbf{Nguồn / Kaggle Link} \\
+\midrule
+\textbf{1. AMZN} & Chứng khoán (1997-2023) & Tensor 3D: $(B, 30, 1)$ & \href{https://www.kaggle.com/datasets/henryshan/amazon-com-inc-amzn}{\texttt{kaggle: henryshan/...}} \\
+\addlinespace
+\textbf{2. Gold} & Giá vàng vĩ mô (1968-2021) & Tensor 3D: $(B, 30, 1)$ & \href{https://www.kaggle.com/datasets/lbronchal/gold-and-silver-prices-dataset}{\texttt{kaggle: lbronchal/...}} \\
+\bottomrule
+\end{tabularx}
+\caption{Tổng hợp đặc tả và nguồn Kaggle của 2 bộ dữ liệu thực nghiệm}
+\label{tab:datasets_spec}
+\end{table}
+
+\newpage
+
+% ==============================================================================
 % CHƯƠNG 1
 % ==============================================================================
-\section{Cơ sở lý thuyết giải tích và toán học của mạng nơ-ron hồi quy (RNN)}
+\section{Cơ sở lý thuyết giải tích và toán học của RNN}
 
-\subsection{Dữ liệu tuần tự và không gian biểu diễn Tensor ba chiều}
-Trong học sâu (Deep Learning), dữ liệu tuần tự (Sequential Data) nói chung và chuỗi thời gian (Time-series Data) nói riêng sở hữu đặc thù cấu trúc mang tính định hướng: \textbf{Thứ tự xuất hiện của các phần tử mang thông tin nhân quả và ngữ cảnh quyết định}. Xét một chuỗi quan sát \(X = \{x_1, x_2, \dots, x_T\}\), tại mỗi thời điểm \(t\), giá trị của \(x_t\) không tồn tại độc lập mà bị chi phối bởi toàn bộ lịch sử các quan sát phía trước nó \(\{x_\tau\}_{\tau=1}^{t-1}\). 
-
-Để các thư viện tính toán ma trận (như NumPy, PyTorch, TensorFlow) có thể tối ưu hóa thông qua các phép nhân khối (Block Matrix Multiplication) trên phần cứng tăng tốc (GPU/TPU), dữ liệu chuỗi được cấu trúc hóa thành một \textbf{Tensor 3 chiều} có dạng chuẩn \((B, T, D)\):
-\begin{itemize}[leftmargin=*]
-    \item \textbf{Batch Size (\(B\)):} Số lượng chuỗi con (sequences) độc lập được đưa vào tính toán đồng thời trong một lượt lan truyền nhằm giảm thiểu phương sai của gradient ước lượng.
-    \item \textbf{Sequence Length (\(T\)):} Chiều dài thời gian của cửa sổ trượt (Time Window). Đây là số lượng time-steps mà mạng hồi quy phải duyệt qua liên tiếp.
-    \item \textbf{Input Dimension / Feature Size (\(D\)):} Số lượng biến/đặc trưng đo lường tại mỗi mốc thời gian \(t\). Trong bài toán chuỗi thời gian đơn biến (Univariate Time-series, ví dụ như giá đóng cửa của Vàng hoặc AMZN), \(D = 1\). Đối với bài toán đa biến (Multivariate), \(D\) có thể mở rộng bao gồm giá mở cửa, khối lượng giao dịch, các chỉ báo kỹ thuật RSI, MACD, v.v.
+\subsection{Dữ liệu chuỗi \& tensor ba chiều}
+Trong lĩnh vực trí tuệ nhân tạo, dữ liệu chuỗi (Sequential Data) mang một đặc tính cốt lõi khác biệt hoàn toàn với ảnh hoặc bảng biểu tĩnh: **Thứ tự của dữ liệu mang ý nghĩa quyết định**. Ví dụ, trong chuỗi thời gian (Time-series), giá trị của biến tại thời điểm $t$ phụ thuộc mật thiết vào các sự kiện diễn ra tại $t-1, t-2, \dots$
+Để máy tính có thể xử lý, dữ liệu chuỗi được biểu diễn dưới dạng **Tensor 3 chiều (3D Tensor)** với cấu trúc định dạng: \texttt{(Batch Size, Sequence Length, Input Features)}.
+\begin{itemize}
+    \item \textbf{Batch Size (Kích thước lô):} Số lượng chuỗi độc lập được xử lý song song trong một lần truyền xuôi (Forward pass).
+    \item \textbf{Sequence Length (Độ dài chuỗi - $T$):} Số mốc thời gian (time steps) có trong một chuỗi đơn. Ví dụ $T=30$ ngày.
+    \item \textbf{Input Features (Đặc trưng đầu vào):} Kích thước không gian vector của mỗi mốc thời gian. Với giá vàng chỉ có 1 cột giá trị, số features bằng 1.
 \end{itemize}
 
-\subsection{Phân loại các cấu trúc bài toán chuỗi thời gian}
-Dựa trên sự tương quan chiều giữa chuỗi đầu vào và chuỗi đầu ra, các kiến trúc hồi quy được chuẩn hóa thành bốn mô hình tính toán hình thái:
-\begin{enumerate}[leftmargin=*]
-    \item \textbf{One-to-One:} Không gian đầu vào và đầu ra đều là vector tĩnh (\(T_{in} = 1, T_{out} = 1\)). Đây thực chất là mô hình mạng truyền thẳng (Feedforward Neural Network - MLP) cổ điển, không lưu vết trạng thái lịch sử.
-    \item \textbf{One-to-Many:} Mạng nhận một vector đặc trưng duy nhất tại \(t=1\) và sinh ra một chuỗi đầu ra có độ dài biến thiên \(T_{out} > 1\) (tiêu biểu như bài toán chú thích hình ảnh - Image Captioning, sinh nhạc tự động).
-    \item \textbf{Many-to-One:} Mạng nhận một chuỗi đầu vào \(\{x_1, x_2, \dots, x_T\}\) và chỉ sinh ra một giá trị dự báo duy nhất \(\hat{y}\) tại mốc thời gian cuối cùng \(T\). \textbf{Đây là cấu trúc nền tảng được triển khai trong nghiên cứu này}, nơi mô hình đọc chuỗi giá 30 ngày trong quá khứ để dự báo giá trị của ngày thứ 31.
-    \item \textbf{Many-to-Many:} Bao gồm hai biến thể kiến trúc:
-    \begin{itemize}
-        \item \textit{Đồng bộ (Synchronized):} Chiều dài chuỗi vào và ra bằng nhau (\(T_{in} = T_{out}\)), mỗi bước \(t\) tiếp nhận \(x_t\) sẽ lập tức sinh ra một đầu ra \(y_t\) tương ứng (như bài toán gán nhãn từ loại POS tagging, phát hiện bất thường thời gian thực).
-        \item \textit{Bất đồng bộ (Encoder - Decoder / Seq2Seq):} Chiều dài vào và ra không nhất thiết bằng nhau (\(T_{in} \neq T_{out}\)). Toàn bộ thông tin chuỗi nguồn được mạng Encoder nén vào một vector ngữ cảnh (Context Vector), trước khi mạng Decoder giải nén để sinh chuỗi đích (như trong dịch máy, nhận dạng giọng nói).
-    \end{itemize}
+\subsection{Các dạng bài toán chuỗi}
+Dựa trên kiến trúc của mạng RNN, bài toán dữ liệu chuỗi được phân loại thành 4 dạng kinh điển:
+\begin{enumerate}
+    \item \textbf{One-to-One:} Bản chất là bài toán mạng Feed Forward (MLP) thông thường, kích thước chuỗi là 1.
+    \item \textbf{One-to-Many:} Mạng nhận một đầu vào duy nhất (ví dụ: một bức ảnh) và sinh ra một chuỗi đầu ra (ví dụ: câu văn chú thích - Image Captioning).
+    \item \textbf{Many-to-One:} Mạng nhận một chuỗi thời gian làm đầu vào và đưa ra một dự đoán duy nhất ở bước cuối cùng. (Đây chính là bài toán dự báo chứng khoán/giá vàng trong đồ án này).
+    \item \textbf{Many-to-Many:} Có hai phân nhóm: 
+        \begin{itemize}
+            \item \textit{Đồng bộ (Synced):} Mỗi bước đầu vào đều có một đầu ra tương ứng (ví dụ: Gán nhãn từ loại cho từng chữ trong câu).
+            \item \textit{Bất đồng bộ (Encoder-Decoder):} Đọc hết một chuỗi rồi mới sinh ra một chuỗi khác (ví dụ: Dịch máy - Machine Translation).
+        \end{itemize}
 \end{enumerate}
 
-\subsection{Sự bất cập của MLP và mạng nơ-ron tích chập 1 chiều (Conv1D)}
-Trước khi mạng hồi quy được ứng dụng rộng rãi, hai phương pháp truyền thống thường được áp dụng để giải quyết chuỗi thời gian là mạng truyền thẳng đa tầng (MLP) và mạng tích chập 1 chiều (Conv1D). Tuy nhiên, cả hai đều bộc lộ những rào cản lý thuyết nghiêm ngặt:
-\begin{itemize}[leftmargin=*]
-    \item \textbf{Mạng truyền thẳng đa tầng (MLP):} Bắt buộc phải dàn phẳng (flatten) chuỗi \((T, D)\) thành một vector duy nhất có kích thước \(T \times D\). Cách tiếp cận này vi phạm tính bất biến tịnh tiến theo thời gian (Temporal Translation Invariance). Trọng số kết nối với ngày thứ $1$ hoàn toàn độc lập với trọng số kết nối với ngày thứ $30$. Do đó, nếu một mô hình giá (chart pattern) xuất hiện ở đầu chuỗi, MLP không thể tái sử dụng tri thức đó khi mô hình tương tự lặp lại ở cuối chuỗi. Hơn nữa, số lượng tham số bùng nổ theo chiều dài \(T\) khiến mô hình rất dễ rơi vào tình trạng quá khớp (Overfitting).
-    \item \textbf{Mạng tích chập 1 chiều (Conv1D):} Sử dụng các bộ lọc trượt trên trục thời gian, đảm bảo được tính chia sẻ tham số (Parameter Sharing). Tuy nhiên, trường tiếp nhận (Receptive Field) của Conv1D bị giới hạn nghiêm ngặt bởi kích thước hạt nhân (Kernel Size) và số lớp tích chập. Để ghi nhận phụ thuộc xa, mạng buộc phải xếp chồng nhiều tầng hoặc dùng tích chập giãn nở (Dilated Convolution). Dẫu vậy, Conv1D không duy trì một bộ nhớ nội tại mang tính liên tục để lưu vết trạng thái tích lũy của toàn bộ chuỗi.
+\subsection{Vì sao MLP và Conv1D chưa đủ?}
+Trước khi có RNN, kỹ sư thường dùng Mạng Đa tầng (MLP) hoặc Tích chập 1 chiều (Conv1D) để xử lý chuỗi:
+\begin{itemize}
+    \item \textbf{Hạn chế của MLP:} MLP bắt buộc kích thước đầu vào phải cố định. Nếu nối (flatten) toàn bộ 30 mốc thời gian thành một vector $1D$, MLP sẽ gán các trọng số độc lập cho từng mốc thời gian. Điều này phá vỡ tính tịnh tiến qua thời gian (Translation Invariance) và không thể chia sẻ tri thức learned pattern (ví dụ một mẫu tăng giá) nếu nó xuất hiện ở các vị trí khác nhau trong chuỗi.
+    \item \textbf{Hạn chế của Conv1D:} Conv1D sử dụng bộ lọc (filter) trượt dọc theo chiều thời gian. Mặc dù có tính chia sẻ tham số (Parameter sharing) cục bộ, Conv1D chỉ nắm bắt được **phụ thuộc ngắn hạn (Short-term dependencies)** theo kích thước kernel. Nó thiếu một "bộ nhớ" toàn cục (Global memory) để ghi nhận chuỗi sự kiện nối tiếp.
 \end{itemize}
 
-\subsection{Kiến trúc Vanilla RNN và cơ chế chia sẻ tham số (Parameter Sharing)}
-Mạng nơ-ron hồi quy đơn giản (Vanilla RNN) giải quyết triệt để các hạn chế trên bằng cách đưa vào khái niệm \textbf{Trạng thái ẩn (Hidden State - \(h_t\))}. Trạng thái ẩn tại bước \(t\) đóng vai trò như một bộ nhớ động, tổng hợp thông tin từ đầu vào hiện tại \(x_t\) và trạng thái ẩn tích lũy của bước liền trước \(h_{t-1}\).
+\subsection{Simple RNN (Vanilla RNN)}
+Để giải quyết những bài toán trên, mạng RNN (Simple RNN / Vanilla RNN) ra đời với khái niệm **Trạng thái Ẩn (Hidden State - $h_t$)**. Trạng thái ẩn đóng vai trò như "trí nhớ ngắn hạn" của mạng, được cập nhật liên tục qua mỗi mốc thời gian $t$.
 
-Điểm mấu chốt mang lại sức mạnh khái quát hóa cho RNN là \textbf{nguyên lý chia sẻ tham số}: Cùng một bộ ma trận trọng số \((W, U, V)\) và vector độ lệch \((b_h, b_y)\) được tái sử dụng tại tất cả các bước thời gian \(t = 1, 2, \dots, T\).
-
-\begin{figure}[htbp]
-    \centering
-    \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
-        % Sơ đồ dạng cuộn (Folded)
-        \node[draw, rectangle, rounded corners, minimum width=1.5cm, minimum height=1cm, fill=blue!10] (cell) at (0,2) {\(h_t\)};
-        \node (x) at (0,0) {\(x_t\)};
-        \node (y) at (0,4) {\(\hat{y}_t\)};
-        \draw[->, thick] (x) -- node[right] {\(W\)} (cell);
-        \draw[->, thick] (cell) -- node[right] {\(V\)} (y);
-        \draw[->, thick] (cell) to [out=150,in=210,looseness=4] node[left] {\(U\)} (cell);
-        \node at (0, -1) {\textbf{(a) Dạng cuộn (Folded)}};
-
-        % Dấu mũi tên unroll
-        \draw[->, very thick, dashed] (1.8, 2) -- (3.2, 2);
-        \node at (2.5, 2.4) {\footnotesize Unroll};
-
-        % Sơ đồ dạng trải phẳng (Unrolled)
-        \node[draw, rectangle, rounded corners, minimum width=1.2cm, minimum height=0.9cm, fill=blue!10] (h1) at (4.5,2) {\(h_{t-1}\)};
-        \node[draw, rectangle, rounded corners, minimum width=1.2cm, minimum height=0.9cm, fill=blue!10] (h2) at (7.5,2) {\(h_t\)};
-        \node[draw, rectangle, rounded corners, minimum width=1.2cm, minimum height=0.9cm, fill=blue!10] (h3) at (10.5,2) {\(h_{t+1}\)};
-
-        \node (x1) at (4.5,0) {\(x_{t-1}\)};
-        \node (x2) at (7.5,0) {\(x_t\)};
-        \node (x3) at (10.5,0) {\(x_{t+1}\)};
-
-        \node (y1) at (4.5,4) {\(\hat{y}_{t-1}\)};
-        \node (y2) at (7.5,4) {\(\hat{y}_t\)};
-        \node (y3) at (10.5,4) {\(\hat{y}_{t+1}\)};
-
-        \draw[->, thick] (x1) -- node[right] {\(W\)} (h1);
-        \draw[->, thick] (x2) -- node[right] {\(W\)} (h2);
-        \draw[->, thick] (x3) -- node[right] {\(W\)} (h3);
-
-        \draw[->, thick] (h1) -- node[above] {\(U\)} (h2);
-        \draw[->, thick] (h2) -- node[above] {\(U\)} (h3);
-        \draw[->, thick] (3.2, 2) -- (h1);
-        \draw[->, thick] (h3) -- (11.8, 2);
-
-        \draw[->, thick] (h1) -- node[right] {\(V\)} (y1);
-        \draw[->, thick] (h2) -- node[right] {\(V\)} (y2);
-        \draw[->, thick] (h3) -- node[right] {\(V\)} (y3);
-        \node at (7.5, -1) {\textbf{(b) Dạng trải phẳng theo thời gian (Unrolled)}};
-    \end{tikzpicture}
-    \caption{Cấu trúc toán học của mạng Vanilla RNN: dạng cuộn gọn và dạng trải phẳng theo thời gian.}
-    \label{fig:rnn_unroll}
-\end{figure}
-
-Quá trình lan truyền xuôi (Forward Pass) được chuẩn hóa qua hệ phương trình đại số tuyến tính:
+Tại mỗi bước $t$, Simple RNN áp dụng nguyên lý **Chia sẻ tham số (Parameter Sharing)**: Các ma trận $U$ (Input-to-Hidden), $W$ (Hidden-to-Hidden) và $V$ (Hidden-to-Output) được dùng chung cho tất cả các mốc thời gian. 
+Phương trình truyền xuôi:
 \begin{align}
-    a_t &= W x_t + U h_{t-1} + b_h \label{eq:pre_activation} \\
-    h_t &= \tanh(a_t) \label{eq:hidden_state} \\
-    \hat{y}_t &= V h_t + b_y \label{eq:output}
+    h_t &= \tanh(U x_t + W h_{t-1} + b_h) \\
+    \hat{y}_t &= V h_t + b_y
 \end{align}
-Trong đó:
-\begin{itemize}[leftmargin=*]
-    \item \(x_t \in \mathbb{R}^{D \times 1}\) là vector đặc trưng đầu vào tại bước \(t\).
-    \item \(h_t \in \mathbb{R}^{H \times 1}\) là trạng thái ẩn tại bước \(t\) (\(H\) là số chiều ẩn - Hidden Dimension).
-    \item \(W \in \mathbb{R}^{H \times D}\) là ma trận trọng số biến đổi từ đầu vào sang trạng thái ẩn.
-    \item \(U \in \mathbb{R}^{H \times H}\) là ma trận trọng số hồi quy chuyển đổi từ \(h_{t-1}\) sang \(h_t\).
-    \item \(V \in \mathbb{R}^{K \times H}\) là ma trận trọng số biến đổi từ trạng thái ẩn sang đầu ra dự báo (\(K\) là chiều đầu ra, với bài toán đơn biến dự báo 1 bước, \(K=1\)).
-    \item \(b_h \in \mathbb{R}^{H \times 1}\) và \(b_y \in \mathbb{R}^{K \times 1}\) là các vector độ lệch tương ứng.
-    \item Hàm kích hoạt \(\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}\) có miền giá trị chặt trong khoảng \((-1, 1)\), giúp kiểm soát biên độ phân kỳ của trạng thái ẩn qua các chu kỳ hồi quy.
-\end{itemize}
+Cơ chế chia sẻ tham số giúp mô hình khái quát hóa tốt hơn và xử lý được các chuỗi có độ dài thay đổi liên tục.
 
-\subsection{Khai triển giải tích BPTT (Backpropagation Through Time)}
-Trong cấu trúc dự báo Many-to-One, hàm mất mát chỉ được tính tại thời điểm cuối cùng \(T\). Xét hàm mất mát sai số bình phương trung bình (MSE) cho một mẫu huấn luyện:
-\begin{equation}
-    \mathcal{L} = \frac{1}{2} \|\hat{y}_T - y_{true}\|_2^2 = \frac{1}{2} (\hat{y}_T - y_{true})^T (\hat{y}_T - y_{true})
-\end{equation}
+\subsection{Lan truyền ngược (BPTT) và vấn đề của gradient}
+Để huấn luyện Simple RNN, thuật toán **Backpropagation Through Time (BPTT)** được sử dụng. BPTT thực chất là trải phẳng mạng RNN theo thời gian thành một mạng sâu $T$ tầng, sau đó áp dụng truyền lỗi ngược (Backprop).
 
-\subsubsection{Gradient tại tầng đầu ra (Output Layer)}
-Áp dụng quy tắc chuỗi cho tầng ra tại bước \(T\):
-\begin{align}
-    d\hat{y}_T &= \frac{\partial \mathcal{L}}{\partial \hat{y}_T} = \hat{y}_T - y_{true} \in \mathbb{R}^{K \times 1} \\
-    \frac{\partial \mathcal{L}}{\partial V} &= d\hat{y}_T \cdot h_T^T \in \mathbb{R}^{K \times H} \\
-    \frac{\partial \mathcal{L}}{\partial b_y} &= d\hat{y}_T \in \mathbb{R}^{K \times 1}
-\end{align}
-Sai số truyền ngược từ tầng ra vào trạng thái ẩn cuối cùng \(h_T\):
+\begin{mybox}{Khảo sát phổ (Spectral Analysis) của ma trận $W$}
+Khi lan truyền ngược $k$ bước thời gian, thành phần $dh_{t-k}$ phụ thuộc vào tích Jacobian:
 \begin{equation}
-    \delta_T = \frac{\partial \mathcal{L}}{\partial h_T} = V^T \cdot d\hat{y}_T \in \mathbb{R}^{H \times 1}
+    \frac{\partial h_t}{\partial h_{t-k}} = \prod_{i=t-k+1}^{t} \left[ W^T \text{diag}(1 - \tanh^2(...)) \right]
 \end{equation}
-
-\subsubsection{Lan truyền ngược qua dòng thời gian}
-Bởi vì ma trận \(W\), \(U\) và \(b_h\) xuất hiện ở mọi bước thời gian từ \(t=1\) đến \(t=T\), đạo hàm toàn phần của hàm mất mát theo các tham số này là tổng tích lũy của các đạo hàm thành phần tại từng bước thời gian:
-\begin{equation}
-    \frac{\partial \mathcal{L}}{\partial W} = \sum_{t=1}^{T} \left. \frac{\partial \mathcal{L}}{\partial W} \right|_t, \quad 
-    \frac{\partial \mathcal{L}}{\partial U} = \sum_{t=1}^{T} \left. \frac{\partial \mathcal{L}}{\partial U} \right|_t, \quad 
-    \frac{\partial \mathcal{L}}{\partial b_h} = \sum_{t=1}^{T} \left. \frac{\partial \mathcal{L}}{\partial b_h} \right|_t
-\end{equation}
-
-Tại một bước thời gian \(t\) bất kỳ (\(1 \le t \le T\)), gọi \(\delta_t = \frac{\partial \mathcal{L}}{\partial h_t}\). Gradient lan truyền qua hàm phi tuyến \(\tanh\) tại nút tiền kích hoạt \(a_t\):
-\begin{equation}
-    \delta_t^{raw} = \frac{\partial \mathcal{L}}{\partial a_t} = \delta_t \odot \tanh'(a_t) = \delta_t \odot (1 - h_t^2)
-\end{equation}
-trong đó \(\odot\) biểu thị tích Hadamard (element-wise product) và sử dụng đồng nhất thức \(\tanh'(z) = 1 - \tanh^2(z)\).
-
-Khi đó, gradient tích lũy tại bước \(t\) được xác định:
-\begin{align}
-    dW_t &= \delta_t^{raw} \cdot x_t^T \in \mathbb{R}^{H \times D} \\
-    dU_t &= \delta_t^{raw} \cdot h_{t-1}^T \in \mathbb{R}^{H \times H} \quad (\text{với } h_0 = \mathbf{0}) \\
-    db_{h, t} &= \delta_t^{raw} \in \mathbb{R}^{H \times 1}
-\end{align}
-
-Để tiếp tục lan truyền ngược về bước \(t-1\), ta tính đạo hàm theo \(h_{t-1}\):
-\begin{equation}
-    \delta_{t-1} = \frac{\partial \mathcal{L}}{\partial h_{t-1}} = \left( \frac{\partial a_t}{\partial h_{t-1}} \right)^T \frac{\partial \mathcal{L}}{\partial a_t} = U^T \cdot \delta_t^{raw} = U^T \left( \delta_t \odot (1 - h_t^2) \right)
-\end{equation}
-
-\subsection{Bản chất suy thoái (Vanishing) và bùng nổ (Exploding) Gradient: Khảo sát ma trận Jacobian}
-Vấn đề cốt tử của BPTT được bộc lộ rõ ràng khi ta phân tích gradient lan truyền từ bước cuối \(T\) về một bước \(k\) nằm xa trong quá khứ (\(k \ll T\)):
-\begin{equation}
-    \delta_k = \frac{\partial \mathcal{L}}{\partial h_k} = \frac{\partial \mathcal{L}}{\partial h_T} \frac{\partial h_T}{\partial h_k} = \delta_T \prod_{j=k+1}^{T} \frac{\partial h_j}{\partial h_{j-1}}
-\end{equation}
-Ma trận Jacobian trung gian giữa hai trạng thái ẩn liên tiếp có dạng:
-\begin{equation}
-    J_j = \frac{\partial h_j}{\partial h_{j-1}} = \text{diag}(1 - h_j^2) U^T
-\end{equation}
-Khai triển tích chuỗi ma trận:
-\begin{equation}
-    \frac{\partial h_T}{\partial h_k} = \prod_{j=k+1}^{T} \text{diag}(1 - h_j^2) U^T
-\end{equation}
-
-Đánh giá chuẩn ma trận (Matrix Norm) theo tính chất bất đẳng thức Schwarz:
-\begin{equation}
-    \left\| \frac{\partial h_T}{\partial h_k} \right\| \le \prod_{j=k+1}^{T} \|\text{diag}(1 - h_j^2)\| \cdot \|U^T\|
-\end{equation}
-Ta xét hai thành phần nhân tử:
-\begin{enumerate}[leftmargin=*]
-    \item \textbf{Thành phần phi tuyến:} Do đạo hàm của hàm hyperbolic tangent bị chặn trên: \(0 < 1 - h_j^2 \le 1\), nên \(\|\text{diag}(1 - h_j^2)\| \le 1\). Dấu bằng chỉ xảy ra khi \(h_j = 0\). Càng xa điểm cân bằng, nhân tử này càng nhỏ hơn 1.
-    \item \textbf{Thành phần ma trận hồi quy:} Gọi \(\rho(U)\) là bán kính phổ (Spectral Radius - giá trị riêng lớn nhất theo trị tuyệt đối) của \(U\). Theo định lý Gelfand, \(\|U^m\| \approx \rho(U)^m\) khi \(m = T - k\) lớn.
-\end{enumerate}
-
-Từ đây phát sinh hai thái cực bất ổn định số học:
-\begin{mybox}{Nghịch lý toán học trong BPTT của Vanilla RNN}
-\begin{itemize}[leftmargin=*]
-    \item \textbf{Bùng nổ Gradient (Exploding Gradient):} Xảy ra khi $\rho(U) > 1$ và các trạng thái \(h_j\) không rơi vào vùng bão hòa của \(\tanh\). Tích ma trận \(U^{T-k}\) tăng trưởng theo quy luật hàm mũ, khiến \(\|\delta_k\| \to \infty\). Hệ quả là các trọng số bị cập nhật với bước nhảy khổng lồ, làm tràn số (NaN/Inf) và phá vỡ hoàn toàn quỹ đạo hội tụ.
-    \item \textbf{Triệt tiêu / Suy thoái Gradient (Vanishing Gradient):} Xảy ra khi \(\rho(U) < 1\) hoặc khi trạng thái ẩn \(h_j\) tiến sát \(\pm 1\) khiến \(\tanh'(a_j) = 1 - h_j^2 \to 0\) (hiện tượng bão hòa hàm kích hoạt). Khi đó, \(\lim_{T-k \to \infty} \left\| \frac{\partial h_T}{\partial h_k} \right\| = 0\). Gradient tại các mốc thời gian ban đầu tiệm cận về 0, đồng nghĩa với việc mạng không thể học được bất kỳ mối liên hệ dài hạn nào vượt quá 10--15 bước thời gian.
+Nếu $\lambda$ là các giá trị riêng lớn nhất của ma trận $W$:
+\begin{itemize}
+    \item Khi $\vert{}\lambda\vert{} > 1$: Lũy thừa ma trận làm cho đạo hàm phình to hàm mũ, gây ra \textbf{Exploding Gradient} (bùng nổ Gradient). Mô hình vỡ quỹ đạo hội tụ (NaN/Inf).
+    \item Khi $\vert{}\lambda\vert{} < 1$: Đạo hàm liên tục nhân với các số $< 1$ (do $\tanh' \le 1$), dẫn tới \textbf{Vanishing Gradient} (suy thoái Gradient). Mạng không thể "nhớ" được các thông tin cách đó quá nhiều bước thời gian.
 \end{itemize}
 \end{mybox}
 
-\subsection{Các giải pháp kỹ thuật ổn định hóa Gradient trong Vanilla RNN}
-
-\subsubsection{Cắt tỉa Gradient (Gradient Clipping)}
-Kỹ thuật Gradient Clipping theo chuẩn L2 (Global Norm Clipping) được đề xuất bởi Pascanu et al. (2013) nhằm giải quyết dứt điểm hiện tượng bùng nổ đạo hàm. Thay vì cắt xén độc lập từng phần tử (làm méo mó hướng của gradient vector), thuật toán giám sát chuẩn tổng thể của toàn bộ tham số:
+\subsection{Giải pháp Kỹ thuật: Gradient Clipping}
+Trong khi Vanishing Gradient đòi hỏi thay đổi cả cấu trúc mạng (sang LSTM/GRU), thì \textbf{Exploding Gradient} có thể giải quyết dứt điểm bằng một kỹ thuật số học cực kỳ thanh lịch: \textbf{Gradient Clipping}.
+Ý tưởng: Theo dõi chuẩn (Norm) của toàn bộ vector Gradient. Nếu Norm vượt qua một ngưỡng $threshold$, ta sẽ thực hiện co rút (scale down) toàn bộ vector gradient theo tỷ lệ để Norm của nó vừa đúng bằng $threshold$.
 \begin{equation}
-    g = \left[ \text{vec}(dW), \text{vec}(dU), \text{vec}(dV), \text{vec}(db_h), \text{vec}(db_y) \right]^T
+    \text{Nếu } \|g\| > \text{threshold}, \quad g \leftarrow g \cdot \frac{\text{threshold}}{\|g\|}
 \end{equation}
-Nếu \(\|g\|_2 > \gamma\) (với \(\gamma\) là ngưỡng cắt tỉa - clipping threshold, thường chọn \(\gamma = 1.0\) hoặc $5.0$), vector gradient được co rút theo tỷ lệ:
-\begin{equation}
-    g \leftarrow g \cdot \frac{\gamma}{\|g\|_2}
-\end{equation}
-Phép biến đổi này bảo toàn hoàn toàn vector chỉ phương của gradient trong không gian tham số, đồng thời giới hạn bước nhảy tối đa của thuật toán tối ưu, loại trừ hoàn toàn nguy cơ phân kỳ do nổ gradient.
-
-\subsubsection{Khởi tạo trọng số trực giao (Orthogonal Initialization)}
-Để giảm thiểu triệt tiêu gradient mà không cần thay đổi cấu trúc mạng, ma trận hồi quy \(U\) được khởi tạo thỏa mãn tính chất trực giao:
-\begin{equation}
-    U^T U = I \implies \|U x\|_2 = \|x\|_2, \quad \forall x \in \mathbb{R}^H
-\end{equation}
-Tất cả các giá trị riêng của ma trận trực giao đều có độ lớn chính xác bằng 1 (\(|\lambda_i| = 1\)). Nhờ đó, khi gradient truyền ngược qua phép nhân \(U^T\), biên độ của vector sai số không bị co rút hay phình to một cách nhân tạo do ảnh hưởng của ma trận trọng số, giúp thông tin gradient có thể truyền sâu hơn qua chuỗi thời gian dài.
-
-\subsubsection{Giới hạn cố hữu và bước đệm chuyển dịch sang LSTM/GRU}
-Mặc dù Gradient Clipping và Orthogonal Initialization giúp ổn định quá trình huấn luyện, chúng không thể giải quyết triệt để vấn đề suy thoái gradient gây ra bởi đạo hàm \(1 - h_t^2\) của hàm \(\tanh\). 
-
-Đây là giới hạn cấu trúc cố hữu của Vanilla RNN, đặt ra yêu cầu tất yếu cho sự ra đời của các kiến trúc cổng nhớ (Gated RNN) như \textbf{LSTM (Long Short-Term Memory)} và \textbf{GRU (Gated Recurrent Unit)}. Bằng việc đưa vào đường truyền trạng thái ô nhớ tuyến tính (Constant Error Carousel - CEC):
-\begin{equation}
-    C_t = f_t \odot C_{t-1} + i_t \odot \tilde{C}_t
-\end{equation}
-đạo hàm \(\frac{\partial C_t}{\partial C_{t-1}} = f_t\) không còn bị chi phối bởi tích ma trận liên tiếp, cho phép gradient lan truyền nguyên vẹn qua hàng trăm bước thời gian.
+Điều này giúp giữ nguyên "hướng" (Direction) của Gradient để mạng vẫn học đúng quy luật, nhưng giới hạn "độ lớn" (Magnitude) để bước nhảy trọng số không phá vỡ mô hình.
 
 
 % ==============================================================================
@@ -521,7 +419,7 @@ Trong giai đoạn khởi động Server (Lifespan start-up), hệ thống quét
 \begin{figure}[H]
     \centering
     % Nơi người dùng sẽ thay thế bằng ảnh Screenshot thực tế
-    \includegraphics[width=0.95\linewidth]{figures/dashboard_ui.png} 
+    \includegraphics[width=0.95\linewidth]{dashboard_ui.png} 
     \caption{Giao diện trực quan của Web Dashboard dự báo chuỗi thời gian (Người dùng thiết lập thông số truy vấn).}
     \label{fig:web_dashboard}
 \end{figure}
