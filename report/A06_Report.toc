@@ -1,0 +1,30 @@
+\babel@toc {vietnamese}{}\relax 
+\contentsline {section}{DANH MỤC HÌNH VẼ}{2}{section*.1}%
+\contentsline {section}{DANH MỤC BẢNG BIỂU}{2}{section*.2}%
+\contentsline {section}{TÓM TẮT BÁO CÁO (ABSTRACT)}{3}{section*.3}%
+\contentsline {section}{\numberline {1}Cơ sở lý thuyết giải tích và toán học của mạng nơ-ron hồi quy (RNN)}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Dữ liệu tuần tự và không gian biểu diễn Tensor ba chiều}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Phân loại các cấu trúc bài toán chuỗi thời gian}{4}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Sự bất cập của MLP và mạng nơ-ron tích chập 1 chiều (Conv1D)}{5}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Kiến trúc Vanilla RNN và cơ chế chia sẻ tham số (Parameter Sharing)}{5}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Khai triển giải tích BPTT (Backpropagation Through Time)}{6}{subsection.1.5}%
+\contentsline {subsubsection}{\numberline {1.5.1}Gradient tại tầng đầu ra (Output Layer)}{6}{subsubsection.1.5.1}%
+\contentsline {subsubsection}{\numberline {1.5.2}Lan truyền ngược qua dòng thời gian}{7}{subsubsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.6}Bản chất suy thoái (Vanishing) và bùng nổ (Exploding) Gradient: Khảo sát ma trận Jacobian}{7}{subsection.1.6}%
+\contentsline {subsection}{\numberline {1.7}Các giải pháp kỹ thuật ổn định hóa Gradient trong Vanilla RNN}{8}{subsection.1.7}%
+\contentsline {subsubsection}{\numberline {1.7.1}Cắt tỉa Gradient (Gradient Clipping)}{8}{subsubsection.1.7.1}%
+\contentsline {subsubsection}{\numberline {1.7.2}Khởi tạo trọng số trực giao (Orthogonal Initialization)}{8}{subsubsection.1.7.2}%
+\contentsline {subsubsection}{\numberline {1.7.3}Giới hạn cố hữu và bước đệm chuyển dịch sang LSTM/GRU}{9}{subsubsection.1.7.3}%
+\contentsline {section}{\numberline {2}Khảo sát dữ liệu chuỗi thực tế (Data Diagnostics)}{9}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Nguồn \& Quy mô data}{9}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Phân phối và biến động}{9}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Tuỳ đặc trưng mỗi data mà làm tiếp}{10}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Thiết kế và cài đặt mô hình}{10}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Trình bày thuật toán \& Cấu hình kỹ thuật}{10}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Bóc tách sâu về Nghịch lý Directional Accuracy}{11}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Triển khai Web App (Deployment Architecture)}{11}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Kiến trúc hệ thống (System Architecture)}{11}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Quy trình Nạp mô hình (Model Loading)}{12}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Giao diện (User Interface)}{12}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Kiểm chứng hệ thống (Validation \& Testing)}{12}{subsection.4.4}%
+\contentsline {section}{Tài liệu tham khảo (References)}{14}{subsection.4.4}%
