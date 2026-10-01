@@ -1,30 +1,40 @@
-\frametitle{Simple RNN: mô hình và quá trình huấn luyện}
-\scriptsize
+\frametitle{BiRNN hồi quy: từ tensor đến giá dự đoán}
+\small
 \begin{columns}[T]
-\begin{column}{0.39\textwidth}
-\begin{lstlisting}[style=rnnpython,basicstyle=\ttfamily\color{white}\tiny]
-class SimpleRNNRegressor(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.rnn = nn.RNN(1, 32,
-                          batch_first=True)
-        self.out = nn.Linear(32, 1)
+\begin{column}{0.59\textwidth}
+\begin{block}{Code PyTorch cốt lõi}
+\begin{lstlisting}[style=rnnpython]
+import torch
+import torch.nn as nn
 
-    def forward(self, x):
-        h, _ = self.rnn(x)
-        return self.out(h[:, -1, :])
+birnn = nn.RNN(1, 32, batch_first=True,
+               bidirectional=True)
+head = nn.Linear(2 * 32, 1)
+
+X_batch = torch.tensor(X[:32], dtype=torch.float32)  # [32, 30, 1]
+_, h = birnn(X_batch)                                # [2, 32, 32]
+h = torch.cat([h[0], h[1]], dim=1)                  # [32, 64]
+y_hat = head(h)                                     # [32, 1]
 \end{lstlisting}
-\vspace{0.05cm}
-\begin{block}{\textbf{Luồng tensor}}
-$(B,30,1) \rightarrow (B,32) \rightarrow (B,1)$
 \end{block}
 \end{column}
-\begin{column}{0.58\textwidth}
-\centering
-\includegraphics[width=\linewidth]{images/rnn_training_loss.png}
-\vspace{0.08cm}
-\begin{exampleblock}{\textbf{Đọc đồ thị loss}}
-Train loss gần 0; validation loss giảm mạnh rồi ổn định ở mức thấp. Đây là MSE trên dữ liệu đã scale, nên vẫn phải đánh giá sai số trên giá gốc và so với baseline.
+
+\begin{column}{0.37\textwidth}
+\begin{exampleblock}{Đọc các kích thước}
+\scriptsize
+\texttt{[32, 30, 1]}: 32 cửa sổ, 30 ngày, 1 giá trị/ngày.\\[2pt]
+\texttt{[2, 32, 32]}: 2 hướng, 32 mẫu, 32 trạng thái.\\[2pt]
+Ghép hai hướng: \(32+32=64\).\\[2pt]
+Đầu ra \texttt{[32, 1]}: mỗi cửa sổ cho một giá dự đoán.
 \end{exampleblock}
+
+\begin{alertblock}{Hồi quy giá vàng}
+Đầu ra là một số thực \(\widehat P_{t+1}\), nên thường dùng MSE hoặc MAE làm loss.
+\end{alertblock}
 \end{column}
 \end{columns}
+
+\vspace{0.12cm}
+\begin{block}{Điều kiện không lộ dữ liệu tương lai}
+BiRNN chỉ đọc cửa sổ \([P_{t-29},\ldots,P_t]\); giá mục tiêu \(P_{t+1}\) chỉ dùng để tính loss, không đưa vào \texttt{X\_batch}.
+\end{block}

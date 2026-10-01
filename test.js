@@ -1,71 +1,3 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>High-Tech RNN Simulation</title>
-    <style>
-        body { margin: 0; overflow: hidden; background-color: #050510; color: #fff; font-family: 'Consolas', monospace; user-select: none; }
-        #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1;}
-        #ui { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 10; background: rgba(10, 15, 30, 0.85); padding: 20px 40px; border-radius: 12px; border: 1px solid #0ff; box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); backdrop-filter: blur(5px); display: flex; flex-direction: column; align-items: center;}
-        h1 { margin: 0 0 15px 0; font-size: 20px; color: #0ff; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px #0ff;}
-        .controls { display: flex; gap: 15px; }
-        button { background: transparent; color: #0ff; border: 1px solid #0ff; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.3s; font-family: 'Consolas', monospace; text-transform: uppercase; letter-spacing: 1px;}
-        button:hover { background: rgba(0, 255, 255, 0.2); box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); }
-        button:active { background: #0ff; color: #000; }
-        
-        #info-panel { position: absolute; top: 30px; left: 30px; z-index: 10; background: rgba(10, 15, 30, 0.85); padding: 20px; border-radius: 8px; border: 1px solid #f0f; width: 350px; box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);}
-        #info-panel h2 { margin: 0 0 10px 0; font-size: 16px; color: #f0f; }
-        #step-desc { font-size: 15px; color: #aaa; line-height: 1.6; }
-
-        /* CSS2D Node Labels */
-        .node-label {
-            color: #fff;
-            font-family: 'Consolas', monospace;
-            font-size: 14px;
-            padding: 4px 8px;
-            background: rgba(0,0,0,0.7);
-            border: 1px solid #fff;
-            border-radius: 4px;
-            pointer-events: none;
-            white-space: nowrap;
-            text-shadow: 0 0 5px #000;
-        }
-        .label-input { border-color: #0f0; color: #0f0; box-shadow: 0 0 10px rgba(0,255,0,0.5);}
-        .label-hidden { border-color: #0ff; color: #0ff; box-shadow: 0 0 10px rgba(0,255,255,0.5);}
-        .label-output { border-color: #f90; color: #f90; box-shadow: 0 0 10px rgba(255,153,0,0.5);}
-    </style>
-</head>
-<body>
-    <div id="info-panel">
-        <h2>Trạng Thái Hệ Thống</h2>
-        <div id="step-desc">Đang khởi tạo mạng RNN...<br>Nhấn [NEXT STEP] để bắt đầu mô phỏng từng nhịp.</div>
-    </div>
-
-    <div id="ui">
-        <h1>Bảng Điều Khiển Mạng Neural</h1>
-        <div class="controls">
-            <button id="btn-next">Next Step ❯</button>
-            <button id="btn-reset">Reset ↺</button>
-        </div>
-    </div>
-
-    <div id="canvas-container"></div>
-
-    <!-- Three.js & Plugins -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    
-    <!-- Postprocessing -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-    
-    <!-- CSS2DRenderer -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS2DRenderer.js"></script>
-
     <script>
         // 1. SETUP SCENE
         const container = document.getElementById('canvas-container');
@@ -233,7 +165,7 @@
                 if (subPhase === 0) {
                     // Y -> H Error gradient
                     spawnDataFlow(nodes[tIndex].y.group.position, nodes[tIndex].h.group.position, 0xff00ff);
-                    document.getElementById('step-desc').innerHTML = `<span style="color:#f0f; font-size:16px;">[LAN TRUYỀN NGƯỢC (BPTT) - BƯỚC ${tIndex+1}]</span><br><br>Tính đạo hàm của Loss tại bước ${tIndex+1}: <b>&part;L<sub>${tIndex+1}</sub> / &part;y&#770;<sub>${tIndex+1}</sub></b>.<br>Lan truyền sai số (gradient) ngược về ma trận V và trạng thái ẩn <b>h<sub>${tIndex+1}</sub></b>.`;
+                    document.getElementById('step-desc').innerHTML = `<span style="color:#f0f; font-size:16px;">[LAN TRUYỀN NGƯỢC (BPTT) - BƯỚC ${tIndex+1}]</span><br><br>Tính đạo hàm của Loss tại bước ${tIndex+1}: <b>&part;L<sub>${tIndex+1}</sub> / &part;y&#770;<sub>${tIndex+1}</sub></b>.<br>Đẩy lỗi ngược về ma trận V và trạng thái ẩn <b>h<sub>${tIndex+1}</sub></b>.`;
                     nodes[tIndex].h.outerMesh.material.color.setHex(0xff00ff);
                     subPhase = 1;
                 }
@@ -245,7 +177,7 @@
                     
                     if (tIndex > 0) {
                         spawnDataFlow(nodes[tIndex].h.group.position, nodes[tIndex-1].h.group.position, 0xff00ff);
-                        msg += `<br><br>Tín hiệu sai số tiếp tục lan truyền ngược về quá khứ qua ma trận <b>U</b> (Gây ra Jacobian Chain):<br><b>&part;h<sub>${tIndex+1}</sub> / &part;h<sub>${tIndex}</sub> = diag(1 - h<sub>${tIndex+1}</sub>&sup2;) &times; U</b><br><i>(Nguồn gốc của Vanishing/Exploding Gradient)</i>`;
+                        msg += `<br><br>Lỗi tiếp tục lan truyền ngược về quá khứ qua ma trận <b>U</b> (Gây ra Jacobian Chain):<br><b>&part;h<sub>${tIndex+1}</sub> / &part;h<sub>${tIndex}</sub> = diag(1 - h<sub>${tIndex+1}</sub>&sup2;) &times; U</b><br><i>(Nguồn gốc của Vanishing/Exploding Gradient)</i>`;
                     }
                     
                     document.getElementById('step-desc').innerHTML = msg;
@@ -324,5 +256,3 @@
             labelRenderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
-</body>
-</html>
